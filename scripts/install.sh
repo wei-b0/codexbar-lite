@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-APP_NAME="CodexBar"
+APP_NAME="CodexBarLite"
 BUNDLE_ID="dev.vaibhav.codexbar"
 
 ROOT_DIR="$(cd "$(dirname "$0")/.." && pwd)"
@@ -88,4 +88,4 @@ launchctl load "$LAUNCH_AGENT"
 echo "Launching app..."
 open "/Applications/$APP_NAME.app"
 
-echo "Done. CodexBar should now appear in your top bar."
+echo "Done. CodexBarLite should now appear in your top bar."

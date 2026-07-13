@@ -6,9 +6,11 @@ struct CodexAuth: Decodable {
 
     struct Tokens: Decodable {
         let accessToken: String?
+        let accountID: String?
 
         enum CodingKeys: String, CodingKey {
             case accessToken = "access_token"
+            case accountID = "account_id"
         }
     }
 }
@@ -26,10 +28,14 @@ struct CodexUsage: Codable {
 }
 
 struct RateLimit: Codable {
+    let allowed: Bool?
+    let limitReached: Bool?
     let primaryWindow: UsageWindow
-    let secondaryWindow: UsageWindow
+    let secondaryWindow: UsageWindow?
 
     enum CodingKeys: String, CodingKey {
+        case allowed
+        case limitReached = "limit_reached"
         case primaryWindow = "primary_window"
         case secondaryWindow = "secondary_window"
     }
@@ -37,11 +43,13 @@ struct RateLimit: Codable {
 
 struct UsageWindow: Codable {
     let usedPercent: Int
+    let limitWindowSeconds: Int?
     let resetAfterSeconds: Int
     let resetAt: Int
 
     enum CodingKeys: String, CodingKey {
         case usedPercent = "used_percent"
+        case limitWindowSeconds = "limit_window_seconds"
         case resetAfterSeconds = "reset_after_seconds"
         case resetAt = "reset_at"
     }
@@ -83,8 +91,8 @@ final class CodexBarLiteApp: NSObject, NSApplicationDelegate {
     private func refresh() {
         Task {
             do {
-                let token = try readAccessToken()
-                let usage = try await fetchUsage(accessToken: token)
+                let auth = try readAuth()
+                let usage = try await fetchUsage(auth: auth)
 
                 await MainActor.run {
                     self.renderUsage(usage, warning: nil)
@@ -109,7 +117,7 @@ final class CodexBarLiteApp: NSObject, NSApplicationDelegate {
         }
     }
 
-    private func readAccessToken() throws -> String {
+    private func readAuth() throws -> CodexAuth.Tokens {
         let authURL = FileManager.default.homeDirectoryForCurrentUser
             .appendingPathComponent(".codex/auth.json")
 
@@ -120,25 +128,23 @@ final class CodexBarLiteApp: NSObject, NSApplicationDelegate {
         let data = try Data(contentsOf: authURL)
         let auth = try JSONDecoder().decode(CodexAuth.self, from: data)
 
-        guard let token = auth.tokens?.accessToken, !token.isEmpty else {
+        guard let tokens = auth.tokens, let accessToken = tokens.accessToken, !accessToken.isEmpty else {
             throw CodexError.notLoggedIn
         }
 
-        return token
+        return tokens
     }
 
-    private func fetchUsage(accessToken: String) async throws -> CodexUsage {
+    private func fetchUsage(auth: CodexAuth.Tokens) async throws -> CodexUsage {
         var request = URLRequest(url: usageURL)
         request.httpMethod = "GET"
-        request.setValue("Bearer \(accessToken)", forHTTPHeaderField: "Authorization")
+        request.setValue("Bearer \(auth.accessToken ?? "")", forHTTPHeaderField: "Authorization")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
-        request.setValue("en-US,en;q=0.9", forHTTPHeaderField: "Accept-Language")
-        request.setValue("https://chatgpt.com/codex", forHTTPHeaderField: "Referer")
-        request.setValue("https://chatgpt.com", forHTTPHeaderField: "Origin")
-        request.setValue(
-            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36",
-            forHTTPHeaderField: "User-Agent"
-        )
+        request.setValue("codex-cli/0.11.0", forHTTPHeaderField: "User-Agent")
+        request.setValue("codex_cli_rs", forHTTPHeaderField: "originator")
+        if let accountID = auth.accountID, !accountID.isEmpty {
+            request.setValue(accountID, forHTTPHeaderField: "chatgpt-account-id")
+        }
 
         let (data, response) = try await URLSession.shared.data(for: request)
 
@@ -163,20 +169,29 @@ final class CodexBarLiteApp: NSObject, NSApplicationDelegate {
         let primary = usage.rateLimit.primaryWindow
         let secondary = usage.rateLimit.secondaryWindow
 
-        self.statusItem.button?.title = "CX \(primary.usedPercent)%/\(secondary.usedPercent)% ⚠"
+        if let secondary {
+            self.statusItem.button?.title = "CX \(primary.usedPercent)%/\(secondary.usedPercent)%"
+        } else {
+            self.statusItem.button?.title = "CX \(primary.usedPercent)%/--"
+        }
 
         let menu = NSMenu()
 
         menu.addItem(withTitle: "Codex \(usage.planType.uppercased())", action: nil, keyEquivalent: "")
         menu.addItem(NSMenuItem.separator())
 
-        menu.addItem(withTitle: "5h: \(primary.usedPercent)% used, \(100 - primary.usedPercent)% left", action: nil, keyEquivalent: "")
+        menu.addItem(withTitle: "\(windowTitle(primary, fallback: "Usage")): \(primary.usedPercent)% used, \(100 - primary.usedPercent)% left", action: nil, keyEquivalent: "")
         menu.addItem(withTitle: "Resets in \(formatDuration(primary.resetAfterSeconds))", action: nil, keyEquivalent: "")
 
-        menu.addItem(NSMenuItem.separator())
-
-        menu.addItem(withTitle: "Week: \(secondary.usedPercent)% used, \(100 - secondary.usedPercent)% left", action: nil, keyEquivalent: "")
-        menu.addItem(withTitle: "Resets in \(formatDuration(secondary.resetAfterSeconds))", action: nil, keyEquivalent: "")
+        if let secondary {
+            menu.addItem(NSMenuItem.separator())
+            menu.addItem(withTitle: "\(windowTitle(secondary, fallback: "Secondary")): \(secondary.usedPercent)% used, \(100 - secondary.usedPercent)% left", action: nil, keyEquivalent: "")
+            menu.addItem(withTitle: "Resets in \(formatDuration(secondary.resetAfterSeconds))", action: nil, keyEquivalent: "")
+        } else {
+            menu.addItem(NSMenuItem.separator())
+            menu.addItem(withTitle: "Secondary: unavailable", action: nil, keyEquivalent: "")
+            menu.addItem(withTitle: "Current Codex usage API is only returning one live window.", action: nil, keyEquivalent: "")
+        }
 
         menu.addItem(NSMenuItem.separator())
 
@@ -278,6 +293,25 @@ final class CodexBarLiteApp: NSObject, NSApplicationDelegate {
         if days > 0 { return "\(days)d \(hours)h" }
         if hours > 0 { return "\(hours)h \(minutes)m" }
         return "\(minutes)m"
+    }
+
+    private func windowTitle(_ window: UsageWindow, fallback: String) -> String {
+        guard let seconds = window.limitWindowSeconds else {
+            return fallback
+        }
+
+        if seconds % 86_400 == 0 {
+            let days = seconds / 86_400
+            if days == 7 { return "Week" }
+            if days == 1 { return "Day" }
+            return "\(days)d"
+        }
+
+        if seconds % 3_600 == 0 {
+            return "\(seconds / 3_600)h"
+        }
+
+        return formatDuration(seconds)
     }
 
     private func cacheURL() -> URL {
