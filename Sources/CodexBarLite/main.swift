@@ -181,12 +181,12 @@ final class CodexBarLiteApp: NSObject, NSApplicationDelegate {
         menu.addItem(NSMenuItem.separator())
 
         menu.addItem(withTitle: "\(windowTitle(primary, fallback: "Usage")): \(primary.usedPercent)% used, \(100 - primary.usedPercent)% left", action: nil, keyEquivalent: "")
-        menu.addItem(withTitle: "Resets in \(formatDuration(primary.resetAfterSeconds))", action: nil, keyEquivalent: "")
+        menu.addItem(withTitle: "Resets in \(formatDuration(secondsUntilReset(primary)))", action: nil, keyEquivalent: "")
 
         if let secondary {
             menu.addItem(NSMenuItem.separator())
             menu.addItem(withTitle: "\(windowTitle(secondary, fallback: "Secondary")): \(secondary.usedPercent)% used, \(100 - secondary.usedPercent)% left", action: nil, keyEquivalent: "")
-            menu.addItem(withTitle: "Resets in \(formatDuration(secondary.resetAfterSeconds))", action: nil, keyEquivalent: "")
+            menu.addItem(withTitle: "Resets in \(formatDuration(secondsUntilReset(secondary)))", action: nil, keyEquivalent: "")
         } else {
             menu.addItem(NSMenuItem.separator())
             menu.addItem(withTitle: "Secondary: unavailable", action: nil, keyEquivalent: "")
@@ -286,6 +286,8 @@ final class CodexBarLiteApp: NSObject, NSApplicationDelegate {
     }
 
     private func formatDuration(_ seconds: Int) -> String {
+        if seconds <= 0 { return "0m" }
+
         let days = seconds / 86_400
         let hours = (seconds % 86_400) / 3_600
         let minutes = (seconds % 3_600) / 60
@@ -312,6 +314,10 @@ final class CodexBarLiteApp: NSObject, NSApplicationDelegate {
         }
 
         return formatDuration(seconds)
+    }
+
+    private func secondsUntilReset(_ window: UsageWindow) -> Int {
+        max(0, window.resetAt - Int(Date().timeIntervalSince1970))
     }
 
     private func cacheURL() -> URL {
