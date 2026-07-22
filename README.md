@@ -1,76 +1,118 @@
 # CodexBar Lite
 
-A lightweight macOS menu bar application that displays your Codex usage limits directly in the top bar.
+<p align="center">
+  Native macOS menu bar app for tracking your Codex usage from your existing local session.
+</p>
 
-No browser extensions.
+<p align="center">
+  <a href="https://github.com/wei-b0/codexbar-lite/releases/latest">
+    <img alt="Latest release" src="https://img.shields.io/github/v/release/wei-b0/codexbar-lite?display_name=tag">
+  </a>
+  <img alt="Platform" src="https://img.shields.io/badge/platform-macOS%2013%2B-black">
+  <img alt="Swift" src="https://img.shields.io/badge/swift-5.10%2B-F05138">
+  <img alt="Type" src="https://img.shields.io/badge/app-menu%20bar-0A7CFF">
+</p>
 
-No Chrome profile access.
+<p align="center">
+  <img src="assets/screenshots/hero-menu-bar.png" alt="CodexBar Lite running in the macOS menu bar" width="900">
+</p>
 
-No Chrome cookie access.
+<p align="center">
+  <img src="assets/screenshots/dropdown.png" alt="CodexBar Lite dropdown showing usage details" width="700">
+</p>
 
-No Keychain access.
+## What It Does
 
-No telemetry.
+- Shows your current Codex usage in the macOS menu bar
+- Uses your existing `codex login` session
+- Refreshes automatically in the background
+- Starts automatically on login
+- Falls back to cached usage when live requests fail
 
-No analytics.
+## Why This Exists
 
-No API keys.
+Most usage trackers depend on one or more of these:
 
-Just a tiny native macOS utility that reads your existing Codex session and displays your current usage quota.
-
----
-
-## Why?
-
-Most existing usage trackers rely on one or more of the following:
-
-- Browser extensions
+- browser extensions
+- cookie scraping
 - Chrome profile access
-- Chrome cookie access
-- Keychain access
+- keychain access
+- external dashboards
 - API keys
-- Third-party services
-- Cloud dashboards
 
-CodexBar Lite takes a different approach.
+CodexBar Lite does not.
 
-If you're already authenticated with:
+It reads the same local Codex auth session you already use and makes the minimum request needed to display your usage.
 
-```bash
-codex login
+## Security Model
+
+CodexBar Lite reads:
+
+```txt
+~/.codex/auth.json
 ```
 
-then CodexBar Lite simply reads the same local session information that Codex already uses.
+It does not require:
 
-Nothing more.
+- Chrome access
+- Safari access
+- Firefox access
+- macOS Keychain access
+- Accessibility permissions
+- Screen recording permissions
+- full disk access
+- API keys
+- telemetry
+- analytics
 
----
+## Current Behavior
+
+The app shows the live usage windows returned by the current Codex usage API.
+
+That means:
+
+- if Codex returns two windows, the app shows two windows
+- if Codex returns one window, the app shows one live value and `--` for the missing slot
+- reset countdowns are computed from the absolute `reset_at` timestamp
+
+Example menu bar states:
+
+```txt
+CX 18%/12%
+CX 36%/--
+```
+
+Example dropdown:
+
+```txt
+Codex PLUS
+
+Week: 36% used, 64% left
+Resets in 6d 14h
+
+Secondary: unavailable
+Current Codex usage API is only returning one live window.
+
+Reset credits: 2
+```
 
 ## Requirements
 
-CodexBar Lite is intended for developers already using Codex locally.
-
 ### macOS
-
-Supported:
 
 - macOS 13 Ventura or newer
 
 ### Swift
 
-Swift 5.10 or newer is required.
+- Swift 5.10 or newer
 
-Verify:
+Check:
 
 ```bash
 swift --version
 ```
 
-### Xcode Command Line Tools
-
-CodexBar Lite does not require the full Xcode IDE.
-
-However, it does require Apple's Command Line Tools.
+### Apple Command Line Tools
 
 Install:
 
@@ -78,16 +120,7 @@ Install:
 xcode-select --install
 ```
 
-Verify:
-
-```bash
-swift --version
-clang --version
-```
-
 ### Codex CLI
-
-CodexBar Lite relies on an existing Codex login session.
 
 Authenticate once:
 
@@ -95,139 +128,23 @@ Authenticate once:
 codex login
 ```
 
-Verify:
+Check:
 
 ```bash
 ls ~/.codex/auth.json
 ```
 
-### Permissions
+## Install
 
-CodexBar Lite does not require:
+### Option 1: Download a release
 
-- Chrome access
-- Chrome profile access
-- Chrome cookie access
-- Safari access
-- Firefox access
-- macOS Keychain access
-- Accessibility permissions
-- Screen recording permissions
-- Full disk access
-- Administrator privileges
+1. Open the [latest release](https://github.com/wei-b0/codexbar-lite/releases/latest)
+2. Download the `CodexBarLite-macos-*.zip` asset
+3. Unzip it
+4. Move `CodexBarLite.app` into `/Applications`
+5. Open it once
 
----
-
-## Features
-
-- Native macOS menu bar application
-- Extremely lightweight
-- Uses minimal memory and CPU
-- Displays 5-hour usage window
-- Displays weekly usage window
-- Automatic background refresh
-- Automatic launch on login
-- Cached fallback during temporary failures
-- No external dependencies
-- No browser integration
-
----
-
-## Menu Bar
-
-Example:
-
-```txt
-CX 18%/12%
-```
-
-Where:
-
-- First value = current 5-hour usage
-- Second value = current weekly usage
-
----
-
-## Dropdown
-
-```txt
-Codex Plus
-
-5h: 18% used
-82% remaining
-
-Week: 12% used
-88% remaining
-
-Reset credits: 1
-```
-
-## Security Model
-
-CodexBar Lite authenticates using the same local session already used by the Codex CLI.
-
-Credentials are read from:
-
-```txt
-~/.codex/auth.json
-```
-
-The application does not:
-
-- Copy credentials
-- Export credentials
-- Store credentials elsewhere
-- Access browser cookies
-- Access browser profiles
-- Access macOS Keychain
-
-Authentication remains managed entirely by the official Codex CLI.
-
----
-
-## Startup
-
-CodexBar Lite automatically starts when you log into macOS.
-
-No manual launch required.
-
-- Does not access Chrome cookies
-- Does not access Chrome profiles
-- Does not access Safari data
-- Does not access Firefox profiles
-- Does not access macOS Keychain
-- Does not require API keys
-- Does not send analytics
-- Does not collect usage data
-- Does not transmit personal information to third parties
-
-All processing happens locally on your machine.
-
----
-
-## Resource Usage
-
-CodexBar Lite is designed to be extremely lightweight.
-
-Typical operation consists of:
-
-- One small network request every minute
-- A tiny cached JSON file
-- A single menu bar item
-
-No embedded browser.
-
-No Electron.
-
-No Chromium.
-
-No background web server.
-
-No heavyweight runtime.
-
----
-
-## Installation
+### Option 2: Build from source
 
 Build:
 
@@ -235,32 +152,31 @@ Build:
 swift build
 ```
 
-Release build:
-
-```bash
-swift build -c release
-```
-
-Install:
+Install the app bundle and LaunchAgent:
 
 ```bash
 chmod +x scripts/install.sh
 ./scripts/install.sh
 ```
 
----
-
 ## Uninstall
 
 ```bash
-launchctl unload ~/Library/LaunchAgents/dev.vaibhav.codexbarlite.plist
-
-rm ~/Library/LaunchAgents/dev.vaibhav.codexbarlite.plist
-
+launchctl unload ~/Library/LaunchAgents/dev.vaibhav.codexbar.plist
+rm ~/Library/LaunchAgents/dev.vaibhav.codexbar.plist
 rm -rf /Applications/CodexBarLite.app
 ```
 
----
+Optional cache cleanup:
+
+```bash
+rm -rf ~/Library/Application\ Support/CodexBarLite
+```
+
+## Repository
+
+- Releases: https://github.com/wei-b0/codexbar-lite/releases
+- Latest release: https://github.com/wei-b0/codexbar-lite/releases/latest
 
 ## Disclaimer
 
