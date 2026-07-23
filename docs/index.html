@@ -22,7 +22,7 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CodexBar Lite — Your Codex usage. Right in your menu bar.</title>
+  <title>CodexBar Lite</title>
   <meta name="description" content="Native Codex usage in your macOS menu bar. No Keychain, no browser cookies, no API key, no third-party account — your Codex login is enough.">
   <link rel="icon" href="assets/logo.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,7 +44,15 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
         <a href="#install">Install</a>
         <a href="#faq">FAQ</a>
       </nav>
-      <a class="btn btn-primary btn-small" href="https://github.com/wei-b0/codexbar-lite/releases/download/v0.2.4/CodexBarLite-0.2.4-arm64.dmg" target="_blank" rel="noopener noreferrer">Download</a>
+      <span class="nav-download">
+        <a class="btn btn-primary btn-small" href="https://github.com/wei-b0/codexbar-lite/releases/download/v0.2.4/CodexBarLite-0.2.4-arm64.dmg" target="_blank" rel="noopener noreferrer">Download</a>
+        <button type="button" class="install-help-trigger install-help-icon" aria-label="How to open CodexBar Lite if macOS blocks it">
+          <svg viewBox="0 0 16 16" width="15" height="15" fill="none"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 7.2v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="5" r="0.9" fill="currentColor"/></svg>
+        </button>
+        <a class="nav-icon-btn" href="https://github.com/wei-b0/codexbar-lite" target="_blank" rel="noopener noreferrer" aria-label="CodexBar Lite on GitHub">
+          <svg viewBox="0 0 16 16" width="15" height="15" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.44 7.44 0 0 1 4 0c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+        </a>
+      </span>
     </div>
   </header>
 
@@ -60,6 +68,10 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
             <a class="btn btn-primary" href="https://github.com/wei-b0/codexbar-lite/releases/download/v0.2.4/CodexBarLite-0.2.4-arm64.dmg" target="_blank" rel="noopener noreferrer">Download Latest Release</a>
             <a class="btn btn-ghost" href="https://github.com/wei-b0/codexbar-lite" target="_blank" rel="noopener noreferrer">View on GitHub</a>
           </div>
+          <p class="install-notice">
+            <svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 7.2v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="5" r="0.9" fill="currentColor"/></svg>
+            <span>macOS may warn that CodexBar Lite isn&rsquo;t notarized. That&rsquo;s expected for an independently distributed open-source app. <button type="button" class="install-help-trigger install-help-link">How to open it</button></span>
+          </p>
           <p class="meta-line">macOS 13 Ventura+ &middot; Apple Silicon (arm64) &middot; Swift 5.10+</p>
         </div>
 
@@ -145,7 +157,7 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
                 <hr class="win-divider">
                 <div class="win-about">
                   <img src="assets/logo.png" width="26" height="26" alt="">
-                  <p>CodexBar Lite 0.2.4 &mdash; no cookies, Keychain, telemetry, or API key.</p>
+                  <p>CodexBar Lite 0.2.4. No cookies, Keychain, telemetry, or API key.</p>
                 </div>
                 <div class="win-buttons">
                   <a class="win-btn" href="https://github.com/wei-b0/codexbar-lite" target="_blank" rel="noopener noreferrer">View on GitHub</a>
@@ -292,14 +304,19 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
         <p class="section-sub">Requires an Apple Silicon Mac on macOS 13 Ventura or newer, with the Codex CLI installed. Open the app and, if no Codex session exists yet, it launches <code>codex login</code> in Terminal and watches for completion.</p>
         <ol class="install-steps">
           <li><a href="https://github.com/wei-b0/codexbar-lite/releases/download/v0.2.4/CodexBarLite-0.2.4-arm64.dmg" target="_blank" rel="noopener noreferrer">Download the latest release</a>.</li>
-          <li>Move <code>CodexBarLite.app</code> to <code>/Applications</code>.</li>
+          <li>Open the downloaded <code>.dmg</code>.</li>
+          <li>Drag CodexBar Lite into <code>/Applications</code>.</li>
           <li>Open it.</li>
         </ol>
         <div class="cta-row">
           <a class="btn btn-primary" href="https://github.com/wei-b0/codexbar-lite/releases/download/v0.2.4/CodexBarLite-0.2.4-arm64.dmg" target="_blank" rel="noopener noreferrer">Download Latest Release</a>
           <a class="btn btn-ghost" href="https://github.com/wei-b0/codexbar-lite#build-from-source" target="_blank" rel="noopener noreferrer">Build from source</a>
         </div>
-        <p class="meta-line">Future versions install through Codex &rarr; Check for Updates&hellip;</p>
+        <p class="install-notice">
+          <svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 7.2v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="5" r="0.9" fill="currentColor"/></svg>
+          <span>If macOS says the app can&rsquo;t be opened, that&rsquo;s Gatekeeper, not a broken download. <button type="button" class="install-help-trigger install-help-link">How to open it</button></span>
+        </p>
+        <p class="meta-line">Future versions install through CodexBar Lite &rarr; Check for Updates&hellip;</p>
       </div>
     </section>
 
@@ -341,6 +358,10 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
           <a class="btn btn-primary" href="https://github.com/wei-b0/codexbar-lite/releases/download/v0.2.4/CodexBarLite-0.2.4-arm64.dmg" target="_blank" rel="noopener noreferrer">Download Latest Release</a>
           <a class="btn btn-ghost" href="https://github.com/wei-b0/codexbar-lite" target="_blank" rel="noopener noreferrer">Star on GitHub</a>
         </div>
+        <p class="install-notice install-notice-center">
+          <svg viewBox="0 0 16 16" width="14" height="14" fill="none" aria-hidden="true"><circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3"/><path d="M8 7.2v4" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="5" r="0.9" fill="currentColor"/></svg>
+          <span>Not notarized by Apple yet, which is normal for an independent open-source app. <button type="button" class="install-help-trigger install-help-link">How to open it</button></span>
+        </p>
       </div>
     </section>
 
@@ -360,6 +381,57 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
       <p class="footer-disclaimer">Not affiliated with, endorsed by, or sponsored by OpenAI.</p>
     </div>
   </footer>
+
+  <div class="help-overlay" id="install-help-modal" hidden role="dialog" aria-modal="true" aria-labelledby="install-help-title" tabindex="-1">
+    <div class="win win-help">
+      <div class="win-titlebar">
+        <span class="win-dot win-dot-red" data-close></span>
+        <span class="win-dot win-dot-yellow"></span>
+        <span class="win-dot win-dot-green"></span>
+        <span class="win-title" id="install-help-title">Installing CodexBar Lite on macOS</span>
+      </div>
+      <div class="win-body help-body">
+        <p>CodexBar Lite is distributed as a <code>.dmg</code> file. Since it isn&rsquo;t currently notarized by Apple, macOS may ask you to confirm before opening it. That&rsquo;s expected, not a sign anything is wrong.</p>
+
+        <ol class="help-steps">
+          <li>Download the latest CodexBar Lite <code>.dmg</code> from the home page.</li>
+          <li>Open the downloaded <code>.dmg</code> file.</li>
+          <li>Drag CodexBar Lite into your <strong>Applications</strong> folder.</li>
+          <li>Open Applications and launch CodexBar Lite.</li>
+          <li>
+            If macOS says it can&rsquo;t be opened because it&rsquo;s from an unidentified developer:
+            <ul>
+              <li>Right-click CodexBar Lite</li>
+              <li>Select <strong>Open</strong></li>
+              <li>Click <strong>Open</strong> again in the confirmation dialog</li>
+            </ul>
+          </li>
+        </ol>
+
+        <p class="help-subhead">Still blocked?</p>
+        <p>Open <strong>System Settings &rarr; Privacy &amp; Security</strong>, find the CodexBar Lite message near the bottom of the page, click <strong>Open Anyway</strong>, then confirm.</p>
+
+        <hr class="win-divider">
+
+        <p class="help-subhead">Why does this happen?</p>
+        <p>macOS uses Gatekeeper to check apps distributed outside the App Store. CodexBar Lite isn&rsquo;t enrolled in Apple&rsquo;s notarization program, so Gatekeeper can&rsquo;t verify it automatically. The source is public, though, so you can read exactly what the app does before you run it.</p>
+
+        <div class="help-links">
+          <a class="win-btn" href="https://github.com/wei-b0/codexbar-lite" target="_blank" rel="noopener noreferrer">Source code</a>
+          <a class="win-btn" href="https://github.com/wei-b0/codexbar-lite/releases" target="_blank" rel="noopener noreferrer">Release page</a>
+        </div>
+
+        <hr class="win-divider">
+
+        <p class="help-subhead">For advanced users</p>
+        <p>Build it yourself instead of trusting the binary:</p>
+        <pre class="mono-block help-code">swift build
+./scripts/install.sh</pre>
+        <p>Or verify the download you already have: compare its checksum to the digest GitHub shows for that file on the <a href="https://github.com/wei-b0/codexbar-lite/releases" target="_blank" rel="noopener noreferrer">release page</a>.</p>
+        <pre class="mono-block help-code">shasum -a 256 CodexBarLite-*.dmg</pre>
+      </div>
+    </div>
+  </div>
 
   <script>
     (function () {
@@ -469,20 +541,29 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
         if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
       }
 
+      var installHelpModal = document.getElementById('install-help-modal');
+
       function onKeydown(e) {
         if (e.key === 'Escape') {
           closeWin(prefsWindow);
           closeWin(updateWindow);
+          closeWin(installHelpModal);
         }
       }
 
-      [prefsWindow, updateWindow].forEach(function (win) {
+      [prefsWindow, updateWindow, installHelpModal].forEach(function (win) {
         if (!win) return;
         win.addEventListener('click', function (e) {
           if (e.target === win) closeWin(win);
         });
         var closeDot = win.querySelector('[data-close]');
         if (closeDot) closeDot.addEventListener('click', function () { closeWin(win); });
+      });
+
+      document.querySelectorAll('.install-help-trigger').forEach(function (trigger) {
+        trigger.addEventListener('click', function () {
+          openWin(installHelpModal);
+        });
       });
 
       var prefsBtn = document.getElementById('demo-preferences');

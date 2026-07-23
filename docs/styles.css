@@ -189,7 +189,7 @@ code {
     display: none;
   }
 
-  .nav-inner .btn-small {
+  .nav-download {
     margin-left: auto;
   }
 }
@@ -1282,4 +1282,186 @@ button.demo-menurow:hover .demo-refresh-icon {
   .footer-links {
     margin-right: 0;
   }
+}
+
+/* Install notice + help modal (macOS Gatekeeper guidance) */
+
+.nav-download {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.install-help-trigger {
+  font-family: inherit;
+  border: none;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+}
+
+.nav-icon-btn,
+.install-help-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  color: var(--text-faint);
+  text-decoration: none;
+}
+
+.nav-icon-btn:hover,
+.nav-icon-btn:focus-visible,
+.install-help-icon:hover,
+.install-help-icon:focus-visible {
+  color: var(--accent-hover);
+  background: var(--accent-tint);
+}
+
+.nav-icon-btn:focus-visible,
+.install-help-icon:focus-visible {
+  outline: 2px solid var(--accent-hover);
+  outline-offset: 1px;
+}
+
+@media (max-width: 720px) {
+  .nav-icon-btn,
+  .install-help-icon {
+    display: none;
+  }
+}
+
+.install-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.4rem;
+  max-width: 46ch;
+  margin: 0.85rem 0 0;
+  font-size: 0.8125rem;
+  color: var(--text-faint);
+  line-height: 1.5;
+}
+
+.install-notice svg {
+  flex-shrink: 0;
+  margin-top: 0.15em;
+}
+
+.install-notice-center {
+  max-width: none;
+  justify-content: center;
+  margin-top: 1rem;
+}
+
+.install-help-link {
+  color: var(--text-dim);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  white-space: nowrap;
+}
+
+.install-help-link:hover,
+.install-help-link:focus-visible {
+  color: var(--accent-hover);
+}
+
+.install-help-link:focus-visible {
+  outline: 2px solid var(--accent-hover);
+  outline-offset: 2px;
+}
+
+.help-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5vh 1.25rem;
+  background: rgba(6, 6, 7, 0.65);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: opacity 0.18s ease;
+}
+
+.help-overlay[hidden] {
+  display: none;
+}
+
+.help-overlay.is-open {
+  opacity: 1;
+}
+
+.win-help {
+  width: 100%;
+  max-width: 560px;
+  max-height: 85vh;
+}
+
+.help-body {
+  padding: 1.25rem 1.5rem 1.5rem;
+}
+
+.help-body p {
+  font-size: 0.9375rem;
+  color: var(--text-dim);
+  margin: 0 0 0.9rem;
+  line-height: 1.6;
+}
+
+.help-body p:first-child {
+  color: var(--text);
+}
+
+.help-steps {
+  margin: 0 0 1rem;
+  padding-left: 1.3rem;
+  color: var(--text-dim);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+}
+
+.help-steps li {
+  margin-bottom: 0.6rem;
+}
+
+.help-steps ul {
+  margin: 0.4rem 0 0;
+  padding-left: 1.2rem;
+  list-style: disc;
+}
+
+.help-steps ul li {
+  margin-bottom: 0.3rem;
+}
+
+.help-subhead {
+  font-weight: 700;
+  color: var(--text);
+  font-size: 0.9375rem;
+  margin: 0 0 0.4rem;
+}
+
+.help-links {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  margin: 0.25rem 0 1rem;
+}
+
+.help-code {
+  font-family: var(--font-mono);
+  font-size: 0.8438rem;
+  line-height: 1.6;
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 0.75rem 1rem;
+  margin: 0 0 0.9rem;
+  overflow-x: auto;
+  white-space: pre;
+  color: var(--text-dim);
 }

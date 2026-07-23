@@ -16,6 +16,9 @@ colors:
   accent-hover: "#3b8bff"
   accent-dim: "#0f5cd1"
   accent-tint: "rgba(20, 117, 252, 0.14)"
+  chrome-red: "#ff5f57"
+  chrome-yellow: "#febc2e"
+  chrome-green: "#28c840"
 typography:
   display:
     fontFamily: "'Bricolage Grotesque', 'SF Pro Display', system-ui, sans-serif"
@@ -59,6 +62,12 @@ typography:
     fontWeight: 400
     lineHeight: 1.5
     letterSpacing: "normal"
+  ui-small-tight:
+    fontFamily: "-apple-system, 'SF Pro Text', system-ui, sans-serif"
+    fontSize: "0.9688rem"
+    fontWeight: 600
+    lineHeight: 1.4
+    letterSpacing: "normal"
   ui-caption:
     fontFamily: "-apple-system, 'SF Pro Text', system-ui, sans-serif"
     fontSize: "0.875rem"
@@ -86,6 +95,7 @@ typography:
 rounded:
   hairline: "1px"
   glyph: "2px"
+  checkbox: "4px"
   xs: "6px"
   sm: "8px"
   md: "14px"
@@ -151,6 +161,9 @@ Near-black ground, one committed blue, sparing warm-white text.
 - **Text Dim** (`#9c9c98`): secondary copy, subheads, captions.
 - **Text Faint** (`#686865`): tertiary meta (footer fine print, timestamps).
 
+### System Chrome (exempt from the palette)
+- **Traffic Lights** (`#ff5f57` red, `#febc2e` yellow, `#28c840` green): the literal macOS window-control dot colors, used only on the titlebar of the Preferences/Update/Install-help window recreations. These are Apple's own system colors, not part of the product palette, and never appear anywhere else on the page.
+
 ### Named Rules
 **The Committed Blue Rule.** Codex Blue fills real surfaces — buttons, badges, active states — at a scale visible from across the page. It is never reduced to a thin link color; that would undo the "Committed" intensity the user explicitly chose.
 
@@ -170,6 +183,7 @@ Near-black ground, one committed blue, sparing warm-white text.
 - **Card title** (600, 1.5rem, 1.25, display face): the "difference card" heading inside Features.
 - **Label** (600, 0.8125rem, 1.4, mono, 0.06em tracking, uppercase): eyebrows, badges, meta lines.
 - **UI small** (400, 0.9375rem, 1.5): nav links, feature-card body, checklist items.
+- **UI small tight** (600, 0.9688rem, 1.4): the feature-list row title and the checkbox label text — one hair above UI small, for label weight without jumping a full step.
 - **UI caption** (600, 0.875rem, 1.4): small buttons, the reads-strip line.
 - **Micro** (600, 0.75rem, 1.4, mono, 0.05em tracking, uppercase): badge pill text.
 - **Nano** (600, 0.6875rem, 1.3, mono, 0.04em tracking, uppercase): the "PLUS" tier badge inside the live demo's dropdown — one step below Micro, scaled to the demo's own smaller frame.
@@ -195,7 +209,7 @@ Layered, not flat: raised panels (`#1b1b1d`) sit on the ground (`#121212`) with 
 
 ## Shapes
 
-Pill-radius (999px) on every interactive control — buttons, badges, nav pills. Cards and panels use a soft continuous corner (14-20px), never sharp. Inline code and the smallest chips use a tighter 6px radius, matching a real system text-field/token corner rather than the page's card corner. The hand-drawn battery glyph in the live menu bar demo uses 1-2px radii on its own tiny strokes (the icon body and its nub) — scaled to the glyph, not the card system. This is a deliberate reversal from the previous flat-document world: the new world speaks real macOS card language.
+Pill-radius (999px) on every interactive control — buttons, badges, nav pills. Cards and panels use a soft continuous corner (14-20px), never sharp. Inline code and the smallest chips use a tighter 6px radius, matching a real system text-field/token corner rather than the page's card corner. The hand-drawn battery glyph in the live menu bar demo uses 1-2px radii on its own tiny strokes (the icon body and its nub) — scaled to the glyph, not the card system. The Preferences window's checkbox glyph uses a 4px radius, matching a real macOS checkbox corner at that small size. This is a deliberate reversal from the previous flat-document world: the new world speaks real macOS card language.
 
 ## Components
 

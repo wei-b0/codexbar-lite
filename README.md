@@ -55,11 +55,12 @@ The app stores only preferences and a local usage cache. It contains no telemetr
 
 Requires an Apple Silicon Mac running macOS 13 Ventura or newer, with the Codex CLI installed.
 
-1. [Download the latest release](https://github.com/wei-b0/codexbar-lite/releases/latest).
-2. Move `CodexBarLite.app` to `/Applications`.
-3. Open it.
+1. [Download the latest release](https://github.com/wei-b0/codexbar-lite/releases/download/v0.2.4/CodexBarLite-0.2.4-arm64.dmg).
+2. Open the downloaded `.dmg`.
+3. Drag CodexBar Lite into `/Applications`.
+4. Open it.
 
-Future versions install through **Codex → Check for Updates…**.
+Future versions install through **CodexBar Lite → Check for Updates…**.
 
 ## Preferences
 
