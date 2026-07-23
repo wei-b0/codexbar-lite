@@ -5,7 +5,7 @@
   --border: #2a2a2d;
   --text: #f3f3f1;
   --text-dim: #9c9c98;
-  --text-faint: #686865;
+  --text-faint: #828280;
   --accent: #1475fc;
   --accent-hover: #3b8bff;
   --accent-dim: #0f5cd1;
@@ -611,11 +611,18 @@ button.demo-menurow:hover .demo-refresh-icon {
   height: 11px;
   border-radius: 50%;
   background: var(--border);
+  border: none;
+  padding: 0;
 }
 
 .win-dot-red {
   background: #ff5f57;
   cursor: pointer;
+}
+
+.win-dot-red:focus-visible {
+  outline: 2px solid var(--accent-hover);
+  outline-offset: 2px;
 }
 
 .win-dot-yellow {

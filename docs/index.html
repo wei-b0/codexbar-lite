@@ -76,7 +76,7 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
         </div>
 
         <div class="hero-visual">
-          <div class="demo" id="usage-demo" role="img" aria-label="A live demonstration of the CodexBar Lite menu bar item and its usage dropdown, showing 63% primary usage.">
+          <div class="demo" id="usage-demo" role="group" aria-label="Live demonstration of the CodexBar Lite menu bar item and usage dropdown, showing 63% primary usage">
             <div class="demo-menubar">
               <span class="demo-menuitem">
                 <span class="dot" aria-hidden="true"></span>
@@ -133,7 +133,7 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
           <div class="win-overlay" id="prefs-window" hidden role="dialog" aria-modal="true" aria-labelledby="prefs-title" tabindex="-1">
             <div class="win win-prefs">
               <div class="win-titlebar">
-                <span class="win-dot win-dot-red" data-close></span>
+                <button type="button" class="win-dot win-dot-red" data-close aria-label="Close"></button>
                 <span class="win-dot win-dot-yellow"></span>
                 <span class="win-dot win-dot-green"></span>
                 <span class="win-title" id="prefs-title">CodexBar Lite Preferences</span>
@@ -385,7 +385,7 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
   <div class="help-overlay" id="install-help-modal" hidden role="dialog" aria-modal="true" aria-labelledby="install-help-title" tabindex="-1">
     <div class="win win-help">
       <div class="win-titlebar">
-        <span class="win-dot win-dot-red" data-close></span>
+        <button type="button" class="win-dot win-dot-red" data-close aria-label="Close"></button>
         <span class="win-dot win-dot-yellow"></span>
         <span class="win-dot win-dot-green"></span>
         <span class="win-title" id="install-help-title">Installing CodexBar Lite on macOS</span>
@@ -394,7 +394,7 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
         <p>CodexBar Lite is distributed as a <code>.dmg</code> file. Since it isn&rsquo;t currently notarized by Apple, macOS may ask you to confirm before opening it. That&rsquo;s expected, not a sign anything is wrong.</p>
 
         <ol class="help-steps">
-          <li>Download the latest CodexBar Lite <code>.dmg</code> from the home page.</li>
+          <li>Download the latest CodexBar Lite <code>.dmg</code> from the <a href="https://github.com/wei-b0/codexbar-lite/releases" target="_blank" rel="noopener noreferrer">release page</a>.</li>
           <li>Open the downloaded <code>.dmg</code> file.</li>
           <li>Drag CodexBar Lite into your <strong>Applications</strong> folder.</li>
           <li>Open Applications and launch CodexBar Lite.</li>
@@ -519,10 +519,13 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
       var updateDone = document.getElementById('update-done');
       var updateProgress = document.getElementById('update-progress');
       var lastFocused = null;
+      var currentOpenWin = null;
+      var FOCUSABLE_SELECTOR = 'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
 
       function openWin(win) {
         if (!win) return;
         lastFocused = document.activeElement;
+        currentOpenWin = win;
         win.hidden = false;
         requestAnimationFrame(function () {
           win.classList.add('is-open');
@@ -537,6 +540,7 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
         window.setTimeout(function () {
           win.hidden = true;
         }, 180);
+        if (currentOpenWin === win) currentOpenWin = null;
         document.removeEventListener('keydown', onKeydown);
         if (lastFocused && typeof lastFocused.focus === 'function') lastFocused.focus();
       }
@@ -548,6 +552,20 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
           closeWin(prefsWindow);
           closeWin(updateWindow);
           closeWin(installHelpModal);
+          return;
+        }
+        if (e.key === 'Tab' && currentOpenWin) {
+          var focusable = currentOpenWin.querySelectorAll(FOCUSABLE_SELECTOR);
+          if (!focusable.length) return;
+          var first = focusable[0];
+          var last = focusable[focusable.length - 1];
+          if (e.shiftKey && document.activeElement === first) {
+            e.preventDefault();
+            last.focus();
+          } else if (!e.shiftKey && document.activeElement === last) {
+            e.preventDefault();
+            first.focus();
+          }
         }
       }
 

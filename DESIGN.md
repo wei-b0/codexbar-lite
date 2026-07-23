@@ -9,7 +9,7 @@ colors:
   border: "#2a2a2d"
   text: "#f3f3f1"
   text-dim: "#9c9c98"
-  text-faint: "#686865"
+  text-faint: "#828280"
   on-accent: "#ffffff"
   hairline-highlight: "rgba(255, 255, 255, 0.08)"
   accent: "#1475fc"
@@ -159,7 +159,7 @@ Near-black ground, one committed blue, sparing warm-white text.
 - **Hairline Highlight** (`rgba(255,255,255,0.08)`): the 1px inset top edge on the dropdown frame, simulating a vibrancy panel's light catch.
 - **Text** (`#f3f3f1`): headlines and primary body copy.
 - **Text Dim** (`#9c9c98`): secondary copy, subheads, captions.
-- **Text Faint** (`#686865`): tertiary meta (footer fine print, timestamps).
+- **Text Faint** (`#828280`): tertiary meta (footer fine print, timestamps). Lightened from an earlier `#686865` during polish: the original value read at 3.35:1 on the page ground, below WCAG AA's 4.5:1 floor for the small text it's actually used on (install notices, meta lines, footer disclaimer).
 
 ### System Chrome (exempt from the palette)
 - **Traffic Lights** (`#ff5f57` red, `#febc2e` yellow, `#28c840` green): the literal macOS window-control dot colors, used only on the titlebar of the Preferences/Update/Install-help window recreations. These are Apple's own system colors, not part of the product palette, and never appear anywhere else on the page.
@@ -238,7 +238,7 @@ Pill-radius (999px) on every interactive control — buttons, badges, nav pills.
 - Each row: a filled Codex Blue circular checkmark (16px), body-weight text, no strike-through — this world proves the no-access claim by affirmation ("No Chrome access") rather than the previous world's strike-through negation.
 
 ### Navigation
-- Logo mark + wordmark left; text links (system font, 0.9375rem) center/right; primary pill button right-most. Sticky is optional; no shadow until scrolled, then Card ambient shadow at reduced opacity.
+- Logo mark + wordmark left; text links (system font, 0.9375rem) center/right; primary pill button plus two compact icon buttons (install-help, GitHub) right-most. Sticky, with a persistent blurred translucent background and a 1px bottom hairline rather than a scroll-triggered shadow — simpler, and consistent with the No-Glow/flat-card language elsewhere.
 
 ## Do's and Don'ts
 
