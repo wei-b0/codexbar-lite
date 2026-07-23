@@ -1,7 +1,3 @@
-<p align="center">
-  <img src="assets/codexbar-lite-blue-dot.png" alt="CodexBar Lite logo" width="112">
-</p>
-
 <h1 align="center">CodexBar Lite</h1>
 
 <p align="center">
@@ -24,12 +20,7 @@
 </p>
 
 <p align="center">
-  <img src="assets/screenshots/hero-menu-bar.png" alt="Codex usage displayed in the macOS menu bar" width="165">
-</p>
-
-<p align="center">
-  <img src="assets/screenshots/dropdown.png" alt="CodexBar Lite usage dropdown" width="305">
-  <img src="assets/screenshots/preferences.png" alt="CodexBar Lite Preferences window" width="499">
+  <img src="assets/banner.png" alt="CodexBar Lite — your Codex usage, right in your menu bar" width="720">
 </p>
 
 ## Your Codex login is enough
