@@ -104,7 +104,24 @@ final class PreferencesWindowController: NSWindowController {
         )
         aboutLabel.textColor = .secondaryLabelColor
         aboutLabel.maximumNumberOfLines = 3
-        stack.addArrangedSubview(aboutLabel)
+        aboutLabel.lineBreakMode = .byWordWrapping
+        aboutLabel.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
+
+        let aboutRow = NSStackView()
+        aboutRow.orientation = .horizontal
+        aboutRow.alignment = .top
+        aboutRow.spacing = 12
+
+        if let logoImage = AppBranding.logoImage {
+            let logoView = NSImageView(image: logoImage)
+            logoView.imageScaling = .scaleProportionallyUpOrDown
+            logoView.widthAnchor.constraint(equalToConstant: 56).isActive = true
+            logoView.heightAnchor.constraint(equalToConstant: 56).isActive = true
+            aboutRow.addArrangedSubview(logoView)
+        }
+
+        aboutRow.addArrangedSubview(aboutLabel)
+        stack.addArrangedSubview(aboutRow)
 
         let buttons = NSStackView()
         buttons.orientation = .horizontal

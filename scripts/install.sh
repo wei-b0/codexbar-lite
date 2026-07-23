@@ -13,6 +13,7 @@ APP_DIR="$ROOT_DIR/dist/$APP_NAME.app"
 CONTENTS_DIR="$APP_DIR/Contents"
 MACOS_DIR="$CONTENTS_DIR/MacOS"
 FRAMEWORKS_DIR="$CONTENTS_DIR/Frameworks"
+RESOURCES_DIR="$CONTENTS_DIR/Resources"
 PLIST="$CONTENTS_DIR/Info.plist"
 
 echo "Building release binary..."
@@ -21,10 +22,12 @@ swift build -c release
 
 echo "Creating app bundle..."
 rm -rf "$APP_DIR"
-mkdir -p "$MACOS_DIR" "$FRAMEWORKS_DIR"
+mkdir -p "$MACOS_DIR" "$FRAMEWORKS_DIR" "$RESOURCES_DIR"
 
 cp "$BUILD_DIR/$APP_NAME" "$MACOS_DIR/$APP_NAME"
 ditto "$BUILD_DIR/Sparkle.framework" "$FRAMEWORKS_DIR/Sparkle.framework"
+cp "$ROOT_DIR/assets/CodexBarLite.icns" "$RESOURCES_DIR/CodexBarLite.icns"
+cp "$ROOT_DIR/assets/codexbar-lite-blue-dot.png" "$RESOURCES_DIR/CodexBarLiteLogo.png"
 install_name_tool -add_rpath "@executable_path/../Frameworks" "$MACOS_DIR/$APP_NAME" 2>/dev/null || true
 
 cat > "$PLIST" <<EOF
@@ -41,6 +44,9 @@ cat > "$PLIST" <<EOF
 
     <key>CFBundleExecutable</key>
     <string>$APP_NAME</string>
+
+    <key>CFBundleIconFile</key>
+    <string>CodexBarLite.icns</string>
 
     <key>CFBundlePackageType</key>
     <string>APPL</string>

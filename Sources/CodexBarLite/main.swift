@@ -84,6 +84,9 @@ final class CodexBarLiteApp: NSObject, NSApplicationDelegate {
 
     func applicationDidFinishLaunching(_ notification: Notification) {
         NSApp.setActivationPolicy(.accessory)
+        if let logoImage = AppBranding.logoImage {
+            NSApp.applicationIconImage = logoImage
+        }
         statusItem.button?.title = "Codex ◔ …"
 
         settings.applyLaunchAtLoginDefaultIfNeeded()

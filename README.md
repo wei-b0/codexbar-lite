@@ -1,7 +1,12 @@
-# CodexBar Lite - Native Codex usage in your macOS menu bar
+<p align="center">
+  <img src="assets/codexbar-lite-blue-dot.png" alt="CodexBar Lite logo" width="112">
+</p>
+
+<h1 align="center">CodexBar Lite</h1>
 
 <p align="center">
-  CodexBar Lite uses the Codex CLI session already on your Mac.<br>
+  <strong>Native Codex usage in your macOS menu bar.</strong><br>
+  Uses the Codex CLI session already on your Mac.<br>
   No browser cookies. No Keychain access. No API keys. No third-party account.
 </p>
 
