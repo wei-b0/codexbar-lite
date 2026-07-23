@@ -382,10 +382,6 @@ final class CodexBarLiteApp: NSObject, NSApplicationDelegate {
         updateItem.isEnabled = updaterController != nil
         menu.addItem(updateItem)
 
-        let aboutItem = NSMenuItem(title: "About CodexBar Lite", action: #selector(showAbout), keyEquivalent: "")
-        aboutItem.target = self
-        menu.addItem(aboutItem)
-
         menu.addItem(NSMenuItem.separator())
 
         let quitItem = NSMenuItem(title: "Quit CodexBar Lite", action: #selector(quit), keyEquivalent: "q")
@@ -438,11 +434,6 @@ final class CodexBarLiteApp: NSObject, NSApplicationDelegate {
 
     @objc private func showPreferences() {
         preferencesController.show()
-    }
-
-    @objc private func showAbout() {
-        NSApp.activate(ignoringOtherApps: true)
-        NSApp.orderFrontStandardAboutPanel(nil)
     }
 
     @objc private func checkForUpdatesMenuAction() {
