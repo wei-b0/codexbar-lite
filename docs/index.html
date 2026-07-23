@@ -78,10 +78,10 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
         <div class="hero-visual">
           <div class="demo" id="usage-demo" role="group" aria-label="Live demonstration of the CodexBar Lite menu bar item and usage dropdown, showing 63% primary usage">
             <div class="demo-menubar">
-              <span class="demo-menuitem">
+              <button type="button" class="demo-menuitem" id="demo-menubar-toggle" aria-expanded="false" aria-controls="demo-dropdown">
                 <span class="dot" aria-hidden="true"></span>
                 Codex <span class="demo-percent" data-target="63">0%</span>
-              </span>
+              </button>
               <span class="demo-sysicons" aria-hidden="true">
                 <svg viewBox="0 0 16 12" width="16" height="12" fill="none"><path d="M8 10.2a1 1 0 1 1 0-2 1 1 0 0 1 0 2Zm-3.1-3a4.4 4.4 0 0 1 6.2 0 .6.6 0 0 1-.85.85 3.2 3.2 0 0 0-4.5 0 .6.6 0 0 1-.85-.85Zm-2.15-2.15a7.6 7.6 0 0 1 10.5 0 .6.6 0 1 1-.83.87 6.4 6.4 0 0 0-8.84 0 .6.6 0 0 1-.83-.87Z" fill="currentColor"/></svg>
                 <span class="demo-battery">
@@ -92,7 +92,7 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
               </span>
             </div>
 
-            <div class="demo-dropdown">
+            <div class="demo-dropdown" id="demo-dropdown" hidden>
               <div class="demo-row demo-row-head">
                 <span class="demo-title">Codex Usage</span>
                 <span class="demo-plus">PLUS</span>
@@ -128,7 +128,7 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
               </div>
             </div>
           </div>
-          <p class="demo-caption">Live demo &mdash; click a row to try it.</p>
+          <p class="demo-caption">Live demo &mdash; click <strong>Codex</strong> in the menu bar to open it.</p>
 
           <div class="win-overlay" id="prefs-window" hidden role="dialog" aria-modal="true" aria-labelledby="prefs-title" tabindex="-1">
             <div class="win win-prefs">
@@ -443,7 +443,30 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
       var percents = demo.querySelectorAll('.demo-percent');
       var refreshBtn = document.getElementById('demo-refresh');
       var timeEl = document.getElementById('demo-time');
+      var dropdown = document.getElementById('demo-dropdown');
+      var menubarToggle = document.getElementById('demo-menubar-toggle');
       var playing = false;
+      var dropdownOpen = false;
+
+      function openDropdown() {
+        if (dropdownOpen) return;
+        dropdownOpen = true;
+        dropdown.hidden = false;
+        menubarToggle.setAttribute('aria-expanded', 'true');
+        requestAnimationFrame(function () {
+          dropdown.classList.add('is-open');
+        });
+      }
+
+      function closeDropdown() {
+        if (!dropdownOpen) return;
+        dropdownOpen = false;
+        dropdown.classList.remove('is-open');
+        menubarToggle.setAttribute('aria-expanded', 'false');
+        window.setTimeout(function () {
+          if (!dropdownOpen) dropdown.hidden = true;
+        }, reduceMotion ? 0 : 170);
+      }
 
       function easeOutExpo(t) {
         return t === 1 ? 1 : 1 - Math.pow(2, -10 * t);
@@ -487,15 +510,46 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
       }
 
       var started = false;
+
+      function runIntro() {
+        if (reduceMotion) {
+          openDropdown();
+          play();
+          return;
+        }
+        window.setTimeout(function () {
+          menubarToggle.classList.add('is-pressed');
+          window.setTimeout(function () {
+            menubarToggle.classList.remove('is-pressed');
+            openDropdown();
+            play();
+          }, 150);
+        }, 1000);
+      }
+
       var observer = new IntersectionObserver(function (entries) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting && !started) {
             started = true;
-            play();
+            runIntro();
           }
         });
       }, { threshold: 0.4 });
       observer.observe(demo);
+
+      menubarToggle.addEventListener('click', function () {
+        if (dropdownOpen) {
+          closeDropdown();
+          return;
+        }
+        openDropdown();
+        if (!started) {
+          started = true;
+          play();
+        } else if (!playing) {
+          setValue(parseInt(percents[0].getAttribute('data-target'), 10));
+        }
+      });
 
       if (refreshBtn) {
         refreshBtn.addEventListener('click', function () {
