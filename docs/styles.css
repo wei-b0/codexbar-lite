@@ -284,15 +284,25 @@ code {
   height: 43px;
 }
 
+.ph-strip-text-short {
+  display: none;
+}
+
 @media (max-width: 700px) {
-  .ph-strip-inner {
-    flex-wrap: wrap;
-    justify-content: center;
-    text-align: center;
+  .ph-strip img,
+  .ph-strip-text-long {
+    display: none;
   }
 
-  .ph-strip-text {
-    flex: 1 1 100%;
+  .ph-strip-text-short {
+    display: inline;
+    color: var(--accent-hover);
+    font-weight: 600;
+  }
+
+  .ph-strip-inner {
+    padding-top: 0.6rem;
+    padding-bottom: 0.6rem;
   }
 }
 
