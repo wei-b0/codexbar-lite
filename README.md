@@ -3,7 +3,8 @@
 <p align="center">
   <strong>Native Codex usage in your macOS menu bar.</strong><br>
   Uses the Codex CLI session already on your Mac.<br>
-  No browser cookies. No Keychain access. No API keys. No third-party account.
+  No browser cookies. No Keychain access. No API keys. No third-party account.<br>
+  <a href="https://getcodexbar.xyz"><strong>getcodexbar.xyz</strong></a>
 </p>
 
 <p align="center">
@@ -20,7 +21,7 @@
 </p>
 
 <p align="center">
-  <img src="assets/banner.png" alt="CodexBar Lite — your Codex usage, right in your menu bar" width="720">
+  <img src="assets/banner.png" alt="CodexBar Lite - your Codex usage, right in your menu bar" width="720">
 </p>
 
 ## Your Codex login is enough

@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>OpenAI Codex Usage Limits, Explained - CodexBar Lite</title>
+  <meta name="description" content="How OpenAI Codex usage limits work: the rolling short window, the weekly window, reset periods, credits, and how to see where you stand before you hit the cap.">
+  <meta name="author" content="Vaibhav Muchandi">
+  <meta name="theme-color" content="#121212">
+  <link rel="canonical" href="https://getcodexbar.xyz/codex-usage-limits">
+  <link rel="icon" href="assets/icon-256.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icon-32.png">
+  <link rel="apple-touch-icon" href="assets/icon-180.png">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="CodexBar Lite">
+  <meta property="og:url" content="https://getcodexbar.xyz/codex-usage-limits">
+  <meta property="og:title" content="OpenAI Codex Usage Limits, Explained">
+  <meta property="og:description" content="How Codex usage limits work: the rolling short window, the weekly window, reset periods, credits, and how to see where you stand before you hit the cap.">
+  <meta property="og:image" content="https://getcodexbar.xyz/assets/og-card.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="OpenAI Codex Usage Limits, Explained">
+  <meta name="twitter:description" content="How Codex usage limits work: the rolling short window, the weekly window, reset periods, credits, and how to see where you stand before you hit the cap.">
+  <meta name="twitter:image" content="https://getcodexbar.xyz/assets/og-card.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "OpenAI Codex Usage Limits, Explained",
+    "description": "How OpenAI Codex usage limits work: the rolling short window, the weekly window, reset periods, credits, and how to see where you stand before you hit the cap.",
+    "url": "https://getcodexbar.xyz/codex-usage-limits",
+    "image": "https://getcodexbar.xyz/assets/og-card.jpg",
+    "author": {
+      "@type": "Person",
+      "name": "Vaibhav Muchandi",
+      "sameAs": "https://github.com/wei-b0"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "CodexBar Lite",
+      "url": "https://getcodexbar.xyz/"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="nav-brand" href="/">
+        <img src="assets/icon-256.png" alt="" width="28" height="28">
+        <span>CodexBar Lite</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="/#features">Features</a>
+        <a href="/#private">Privacy</a>
+        <a href="/#install">Install</a>
+        <a href="/#faq">FAQ</a>
+      </nav>
+      <span class="nav-download">
+        <a class="btn btn-primary btn-small" href="https://github.com/wei-b0/codexbar-lite/releases/download/v0.2.4/CodexBarLite-0.2.4-arm64.dmg" target="_blank" rel="noopener noreferrer">Download</a>
+      </span>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="wrap guide-wrap">
+        <p class="eyebrow">Guide</p>
+        <h1 class="headline">OpenAI Codex usage limits, explained.</h1>
+        <p class="section-sub">What the limits are, how the two windows work, when they reset, and how to see where you stand before you hit the cap.</p>
+
+        <h2>What are Codex usage limits?</h2>
+        <p>Codex usage is included with a ChatGPT plan rather than billed per token. Instead of an invoice, your plan comes with an amount of Codex usage, and OpenAI enforces it with rate limits: once you use up a window's allowance, Codex stops accepting new work until that window resets. Higher tiers include more usage, but every plan has limits.</p>
+
+        <h2>The two windows: short and weekly</h2>
+        <p>Codex tracks usage against two limits at the same time:</p>
+        <ul>
+          <li><strong>A rolling short window</strong> that covers your recent activity (on the order of hours). This is the one heavy sessions run into first - a long agentic task can consume a lot of it quickly.</li>
+          <li><strong>A weekly window</strong> that caps total usage over a longer period. Even if the short window keeps recovering, sustained daily use draws this one down.</li>
+        </ul>
+        <p>You can be blocked by either window independently. CodexBar Lite surfaces them as <strong>primary</strong> and <strong>secondary</strong> usage, each with its own percentage and reset time.</p>
+
+        <h2>Resets and credits</h2>
+        <p>Each window refills on its own schedule: the short window recovers on a rolling basis a few hours after usage, while the weekly window resets on a longer cycle. Codex also has credits, which can extend usage when a window is exhausted. Because both clocks run independently, "when can I code again?" has two answers - which is why seeing both reset timers at once matters.</p>
+
+        <h2>What happens when you hit the cap?</h2>
+        <p>Codex declines new turns until the relevant window resets. Your options at that point are to wait for the reset, use available credits, or upgrade to a plan with more included usage. The frustrating version of this is finding out mid-task; the better version is knowing you were at 90% before you started.</p>
+
+        <h2>How to check where you stand</h2>
+        <p>You can run <code>/status</code> inside the Codex CLI or open the usage dashboard on the web - our guide to <a href="/how-to-check-codex-usage">checking your Codex usage</a> walks through every method. Both require going to look, though.</p>
+
+        <div class="guide-cta">
+          <p><strong>CodexBar Lite</strong> keeps both windows - percentages and reset times - live in your macOS menu bar, and notifies you at 80%, 90%, exhaustion, and credit reset. Free, open source, and it needs nothing but the Codex login already on your Mac.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="https://github.com/wei-b0/codexbar-lite/releases/download/v0.2.4/CodexBarLite-0.2.4-arm64.dmg" target="_blank" rel="noopener noreferrer">Download CodexBar Lite</a>
+            <a class="btn btn-ghost" href="/">Learn more</a>
+          </div>
+        </div>
+
+        <p class="meta-line" style="margin-top: 2rem;">Limit sizes and reset schedules are set by OpenAI and change over time - check your plan's current allowance in the Codex dashboard. Not affiliated with OpenAI.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <a class="nav-brand" href="/">
+        <img src="assets/icon-256.png" alt="" width="22" height="22">
+        <span>CodexBar Lite</span>
+      </a>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="/codex-usage-limits">Codex Usage Limits</a>
+        <a href="/how-to-check-codex-usage">Check Codex Usage</a>
+        <a href="/codexbar-alternative">CodexBar Alternative</a>
+        <a href="https://github.com/wei-b0/codexbar-lite" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </nav>
+      <p class="footer-disclaimer">Not affiliated with, endorsed by, or sponsored by OpenAI.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

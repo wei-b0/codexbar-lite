@@ -1262,6 +1262,79 @@ button.demo-menurow:hover .demo-refresh-icon {
   max-width: 62ch;
 }
 
+/* Guides */
+
+.guide-wrap {
+  max-width: 720px;
+}
+
+.guide-wrap h2 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  line-height: 1.25;
+  margin: 2.75rem 0 0.9rem;
+}
+
+.guide-wrap p,
+.guide-wrap li {
+  color: var(--text-dim);
+}
+
+.guide-wrap p {
+  margin: 0 0 1rem;
+  max-width: 68ch;
+}
+
+.guide-wrap ul,
+.guide-wrap ol {
+  padding-left: 1.4rem;
+  margin: 0 0 1rem;
+}
+
+.guide-wrap li {
+  margin-bottom: 0.5rem;
+}
+
+.guide-wrap a {
+  color: var(--accent-hover);
+}
+
+.guide-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+  margin: 0.5rem 0 1.5rem;
+}
+
+.guide-table th,
+.guide-table td {
+  text-align: left;
+  padding: 0.65rem 0.9rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+.guide-table th {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.guide-table td {
+  color: var(--text-dim);
+}
+
+.guide-cta {
+  margin-top: 3rem;
+  padding: 1.75rem;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: var(--bg-inset);
+}
+
+.guide-cta p {
+  margin-bottom: 1.25rem;
+}
+
 /* Closing */
 
 .closing {

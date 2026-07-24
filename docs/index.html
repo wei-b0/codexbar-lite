@@ -1,6 +1,6 @@
 <!--
 THESIS: the logo's own blue dot, expanded to real structural scale, on the
-logo's own near-black ground — refusing both the previous flat document world
+logo's own near-black ground - refusing both the previous flat document world
 and the generic neon-glow dark-SaaS rut.
 OWN-WORLD: near-black ground (#121212) matched to the icon's fill, Codex Blue
 (#1475fc) committed across buttons/badges/active states, Bricolage Grotesque
@@ -12,7 +12,7 @@ live in one glance; a "Private by design" checklist affirms every access
 refused; feature grid and FAQ carry the rest; a closing CTA closes the loop.
 FIRST VIEWPORT: nav, eyebrow badge, display headline, subhead, CTA pair, meta
 line, and the live, animated usage demo beside it on desktop.
-FORM: brief-pinned canon — kraten.github.io/chimlo's structural rhythm
+FORM: brief-pinned canon - kraten.github.io/chimlo's structural rhythm
 (hero / feature grid / trust checklist / install / FAQ / closing CTA),
 executed with CodexBar Lite's own content, screenshots, and blue accent.
 User confirmed one reference (Chimlo) is sufficient craft bar.
@@ -22,20 +22,138 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CodexBar Lite</title>
-  <meta name="description" content="Native Codex usage in your macOS menu bar. No Keychain, no browser cookies, no API key, no third-party account — your Codex login is enough.">
-  <link rel="icon" href="assets/logo.png">
+  <title>CodexBar Lite - Minimal Codex Usage Tracker for the macOS Menu Bar</title>
+  <meta name="description" content="A minimal, lightweight macOS menu bar app for OpenAI Codex usage and rate-limit resets. Free and open source. No Keychain, no cookies, no API key - just your Codex login.">
+  <meta name="author" content="Vaibhav Muchandi">
+  <meta name="theme-color" content="#121212">
+  <link rel="canonical" href="https://getcodexbar.xyz/">
+  <link rel="icon" href="assets/icon-256.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icon-32.png">
+  <link rel="apple-touch-icon" href="assets/icon-180.png">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="CodexBar Lite">
+  <meta property="og:url" content="https://getcodexbar.xyz/">
+  <meta property="og:title" content="CodexBar Lite - Minimal Codex Usage Tracker for the macOS Menu Bar">
+  <meta property="og:description" content="A minimal, lightweight macOS menu bar app for OpenAI Codex usage and rate-limit resets. Free and open source. No Keychain, no cookies, no API key - just your Codex login.">
+  <meta property="og:image" content="https://getcodexbar.xyz/assets/og-card.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="CodexBar Lite - Codex usage dropdown open in the macOS menu bar, showing 63% primary usage and reset times">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="CodexBar Lite - Minimal Codex Usage Tracker for the macOS Menu Bar">
+  <meta name="twitter:description" content="A minimal, lightweight macOS menu bar app for OpenAI Codex usage and rate-limit resets. Free and open source. No Keychain, no cookies, no API key - just your Codex login.">
+  <meta name="twitter:image" content="https://getcodexbar.xyz/assets/og-card.jpg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "CodexBar Lite",
+    "url": "https://getcodexbar.xyz/"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "CodexBar Lite",
+    "url": "https://getcodexbar.xyz/",
+    "sameAs": "https://github.com/wei-b0/codexbar-lite",
+    "description": "A minimal, lightweight macOS menu bar app that shows OpenAI Codex usage and rate-limit resets live. No Keychain, no browser cookies, no API key - just your Codex login.",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "macOS 13.0 or later",
+    "processorRequirements": "Apple Silicon (arm64)",
+    "softwareVersion": "0.2.4",
+    "downloadUrl": "https://github.com/wei-b0/codexbar-lite/releases/download/v0.2.4/CodexBarLite-0.2.4-arm64.dmg",
+    "installUrl": "https://github.com/wei-b0/codexbar-lite/releases",
+    "image": "https://getcodexbar.xyz/assets/icon-256.png",
+    "screenshot": "https://getcodexbar.xyz/assets/screenshots/dropdown.png",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "author": {
+      "@type": "Person",
+      "name": "Vaibhav Muchandi",
+      "sameAs": "https://github.com/wei-b0"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Does CodexBar Lite need my Keychain, Chrome, or an API key?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. It reads ~/.codex/auth.json, the session your existing codex login already created, and requests usage directly from chatgpt.com. Nothing else on your Mac is touched."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does my data leave my Mac?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Only the minimum request needed to show your usage goes to chatgpt.com. There is no third-party backend, account, telemetry, or analytics."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What if I haven't run codex login yet?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Open the app. If no Codex session exists, it launches codex login in Terminal and watches for completion - usage appears automatically once login succeeds."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I check my Codex usage and rate limits?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Inside the Codex CLI you can run /status, or open the usage dashboard on the web - but both require going to look. CodexBar Lite keeps your Codex usage and rate-limit reset times live in the macOS menu bar, and notifies you before you hit the cap. See the full guide to checking your Codex usage."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is CodexBar Lite different from CodexBar?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "CodexBar tracks many providers - Claude, Cursor, Gemini, Copilot, and more - and to do that it reads browser cookies (Safari, Chrome, Brave, Edge), uses Keychain access to decrypt them, and can ask for Full Disk Access. CodexBar Lite deliberately does one thing: your Codex number, from one file, ~/.codex/auth.json. It never touches your browser or Keychain. Lite is the feature, not a limitation. Read the full comparison."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I uninstall it?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Quit CodexBar Lite and move it from /Applications to Trash. Optional cleanup: rm -rf ~/Library/Application Support/CodexBarLite and defaults delete dev.vaibhav.codexbar."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is this affiliated with OpenAI?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. CodexBar Lite is an independent utility and is not affiliated with, endorsed by, or sponsored by OpenAI."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
 
   <header class="nav">
     <div class="wrap nav-inner">
       <a class="nav-brand" href="#top">
-        <img src="assets/logo.png" alt="" width="28" height="28">
+        <img src="assets/icon-256.png" alt="" width="28" height="28">
         <span>CodexBar Lite</span>
       </a>
       <nav class="nav-links" aria-label="Primary">
@@ -63,7 +181,7 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
         <div class="hero-copy">
           <p class="eyebrow">macOS 13+ &middot; Apple Silicon &middot; Free</p>
           <h1 class="display">Your Codex usage.<br>Right in your<br><span class="accent-text">menu bar.</span></h1>
-          <p class="hero-sub">Uses the Codex CLI session already on your Mac. No browser cookies. No Keychain access. No API keys. No third-party account.</p>
+          <p class="hero-sub">A native OpenAI Codex usage tracker for macOS. Uses the Codex CLI session already on your Mac. No browser cookies. No Keychain access. No API keys. No third-party account.</p>
           <div class="cta-row">
             <a class="btn btn-primary" href="https://github.com/wei-b0/codexbar-lite/releases/download/v0.2.4/CodexBarLite-0.2.4-arm64.dmg" target="_blank" rel="noopener noreferrer">Download Latest Release</a>
             <a class="btn btn-ghost" href="https://github.com/wei-b0/codexbar-lite" target="_blank" rel="noopener noreferrer">View on GitHub</a>
@@ -128,7 +246,7 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
               </div>
             </div>
           </div>
-          <p class="demo-caption">Live demo &mdash; click <strong>Codex</strong> in the menu bar to open it.</p>
+          <p class="demo-caption">Live demo - click <strong>Codex</strong> in the menu bar to open it.</p>
 
           <div class="win-overlay" id="prefs-window" hidden role="dialog" aria-modal="true" aria-labelledby="prefs-title" tabindex="-1">
             <div class="win win-prefs">
@@ -156,7 +274,7 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
 
                 <hr class="win-divider">
                 <div class="win-about">
-                  <img src="assets/logo.png" width="26" height="26" alt="">
+                  <img src="assets/icon-256.png" width="26" height="26" alt="">
                   <p>CodexBar Lite 0.2.4. No cookies, Keychain, telemetry, or API key.</p>
                 </div>
                 <div class="win-buttons">
@@ -169,7 +287,7 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
 
           <div class="win-overlay" id="update-window" hidden role="dialog" aria-modal="true" aria-labelledby="update-title" tabindex="-1">
             <div class="win win-dialog">
-              <img src="assets/logo.png" width="40" height="40" alt="">
+              <img src="assets/icon-256.png" width="40" height="40" alt="">
               <div class="update-state" id="update-checking">
                 <p class="win-dialog-title" id="update-title">Checking for updates&hellip;</p>
                 <div class="win-progress"><div class="win-progress-fill" id="update-progress"></div></div>
@@ -188,7 +306,7 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
         <div class="wrap reads-inner">
           <span class="badge">Reads</span>
           <code>~/.codex/auth.json</code>
-          <span class="reads-note">— and nothing else</span>
+          <span class="reads-note">- and nothing else</span>
         </div>
       </div>
     </section>
@@ -196,26 +314,26 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
     <section id="features" class="section">
       <div class="wrap">
         <p class="eyebrow">Features</p>
-        <h2 class="headline">Everything you need to know. Nothing you don't.</h2>
-        <p class="section-sub">No dashboards, browser extensions, graphs, themes, or account switching. CodexBar Lite stays small because the menu bar is all this job needs.</p>
+        <h2 class="headline">Everything a Codex usage tracker needs. Nothing it doesn't.</h2>
+        <p class="section-sub">No dashboards, browser extensions, graphs, themes, or account switching. CodexBar Lite stays small because the menu bar is all this job needs - one provider, one number, zero extra permissions.</p>
 
         <div class="difference-card">
           <div class="difference-copy">
             <p class="eyebrow eyebrow-inset">The moment that matters</p>
             <h3 class="card-title">Know before you hit the limit.</h3>
-            <p>Get notified at 80%, 90%, exhaustion, and credit reset &mdash; the way macOS already tells you things, so you never have to go looking.</p>
+            <p>Get notified at 80%, 90%, exhaustion, and credit reset - the way macOS already tells you things, so you never have to go looking.</p>
           </div>
           <div class="difference-visual">
             <div class="notif-stack" aria-hidden="true">
               <div class="notif notif-back">
-                <img src="assets/logo.png" alt="" width="20" height="20">
+                <img src="assets/icon-256.png" alt="" width="20" height="20">
                 <div class="notif-body">
                   <p class="notif-title">Primary usage at 90%</p>
                   <p class="notif-text">2 credits remaining before reset.</p>
                 </div>
               </div>
               <div class="notif notif-front">
-                <img src="assets/logo.png" alt="" width="20" height="20">
+                <img src="assets/icon-256.png" alt="" width="20" height="20">
                 <div class="notif-head">
                   <span class="notif-app">CodexBar Lite</span>
                   <span class="notif-time">now</span>
@@ -241,7 +359,7 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
             <span class="feature-icon"><svg viewBox="0 0 20 20" width="18" height="18" fill="none"><path d="M10 3.5c-1.9 0-3.2 1.5-3.2 3.4v2.1c0 .5-.2 1.2-.5 1.6l-.7.9c-.4.6 0 1.4.7 1.4h8.4c.7 0 1.1-.8.7-1.4l-.7-.9c-.3-.4-.5-1.1-.5-1.6V6.9c0-1.9-1.4-3.4-3.3-3.4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M8.6 15.3a1.4 1.4 0 0 0 2.8 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg></span>
             <span class="feature-copy">
               <span class="feature-title">Threshold alerts</span>
-              <span class="feature-desc">Notified at 80%, 90%, exhaustion, and credit reset &mdash; not just a silent number.</span>
+              <span class="feature-desc">Notified at 80%, 90%, exhaustion, and credit reset - not just a silent number.</span>
             </span>
           </li>
           <li class="feature-row">
@@ -281,8 +399,9 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
         <div>
           <p class="eyebrow">Private by design</p>
           <h2 class="headline">Your Codex login is enough.</h2>
-          <p>Usage trackers often ask you to hand over access to sensitive parts of your Mac just to display a number. CodexBar Lite reads the same local session <code>codex login</code> already created, and makes the minimum request needed to show your usage &mdash; directly from <code>chatgpt.com</code>.</p>
+          <p>Usage trackers often ask you to hand over access to sensitive parts of your Mac just to display a number. CodexBar Lite reads the same local session <code>codex login</code> already created, and makes the minimum request needed to show your usage - directly from <code>chatgpt.com</code>.</p>
           <p>There is no third-party backend, account, telemetry, or analytics. The app stores only preferences and a local usage cache.</p>
+          <p>Usage trackers that support every provider have to harvest sessions from wherever they live - browser cookie stores, the macOS Keychain, sometimes Full Disk Access. Single-provider by design means this checklist isn&rsquo;t restraint. It&rsquo;s architecture.</p>
         </div>
         <ul class="checklist">
           <li>No Chrome or browser-profile access</li>
@@ -335,7 +454,15 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
           </details>
           <details>
             <summary><span class="q">What if I haven't run <code>codex login</code> yet?</span></summary>
-            <p>Open the app. If no Codex session exists, it launches <code>codex login</code> in Terminal and watches for completion &mdash; usage appears automatically once login succeeds.</p>
+            <p>Open the app. If no Codex session exists, it launches <code>codex login</code> in Terminal and watches for completion - usage appears automatically once login succeeds.</p>
+          </details>
+          <details>
+            <summary><span class="q">How do I check my Codex usage and rate limits?</span></summary>
+            <p>Inside the Codex CLI you can run <code>/status</code>, or open the usage dashboard on the web - but both require going to look. CodexBar Lite keeps your Codex usage and rate-limit reset times live in the macOS menu bar, and notifies you before you hit the cap. See the full guide to <a href="/how-to-check-codex-usage">checking your Codex usage</a>.</p>
+          </details>
+          <details>
+            <summary><span class="q">How is CodexBar Lite different from CodexBar?</span></summary>
+            <p>CodexBar tracks many providers - Claude, Cursor, Gemini, Copilot, and more - and to do that it reads browser cookies (Safari, Chrome, Brave, Edge), uses Keychain access to decrypt them, and can ask for Full Disk Access. CodexBar Lite deliberately does one thing: your Codex number, from one file, <code>~/.codex/auth.json</code>. It never touches your browser or Keychain. Lite is the feature, not a limitation. Read the full <a href="/codexbar-alternative">comparison</a>.</p>
           </details>
           <details>
             <summary><span class="q">How do I uninstall it?</span></summary>
@@ -351,7 +478,7 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
 
     <section class="section closing">
       <div class="wrap closing-inner">
-        <img class="closing-logo" src="assets/logo.png" alt="" width="72" height="72">
+        <img class="closing-logo" src="assets/icon-256.png" alt="" width="72" height="72">
         <h2 class="headline">Know your usage. Nothing else granted.</h2>
         <p class="section-sub">Free, native, and small on purpose.</p>
         <div class="cta-row cta-row-center">
@@ -370,12 +497,14 @@ User confirmed one reference (Chimlo) is sufficient craft bar.
   <footer class="footer">
     <div class="wrap footer-inner">
       <a class="nav-brand" href="#top">
-        <img src="assets/logo.png" alt="" width="22" height="22">
+        <img src="assets/icon-256.png" alt="" width="22" height="22">
         <span>CodexBar Lite</span>
       </a>
       <nav class="footer-links" aria-label="Footer">
+        <a href="/codex-usage-limits">Codex Usage Limits</a>
+        <a href="/how-to-check-codex-usage">Check Codex Usage</a>
+        <a href="/codexbar-alternative">CodexBar Alternative</a>
         <a href="https://github.com/wei-b0/codexbar-lite" target="_blank" rel="noopener noreferrer">GitHub</a>
-        <a href="https://github.com/wei-b0/codexbar-lite/blob/main/README.md" target="_blank" rel="noopener noreferrer">README</a>
         <a href="https://github.com/wei-b0/codexbar-lite/releases" target="_blank" rel="noopener noreferrer">Releases</a>
       </nav>
       <p class="footer-disclaimer">Not affiliated with, endorsed by, or sponsored by OpenAI.</p>
