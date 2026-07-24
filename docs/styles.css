@@ -247,6 +247,56 @@ code {
   gap: 1rem;
 }
 
+.ph-strip {
+  display: block;
+  background: var(--bg-inset);
+  border-bottom: 1px solid var(--border);
+  text-decoration: none;
+  transition: background 0.15s ease;
+}
+
+.ph-strip:hover {
+  background: var(--bg-raised);
+}
+
+.ph-strip:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: -2px;
+}
+
+.ph-strip-inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 0.7rem;
+  padding-bottom: 0.7rem;
+}
+
+.ph-strip-text {
+  flex: 1;
+  font-size: 0.9375rem;
+  color: var(--text-dim);
+}
+
+.ph-strip img {
+  display: block;
+  width: auto;
+  height: 43px;
+}
+
+@media (max-width: 700px) {
+  .ph-strip-inner {
+    flex-wrap: wrap;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .ph-strip-text {
+    flex: 1 1 100%;
+  }
+}
+
+
 .cta-row-center {
   justify-content: center;
 }
