@@ -1,11 +1,13 @@
 <h1 align="center">CodexBar Lite</h1>
 
 <p align="center">
-  <strong>Native Codex usage in your macOS menu bar.</strong><br>
+  <strong>Native OpenAI Codex usage tracker for your macOS menu bar.</strong><br>
   Uses the Codex CLI session already on your Mac.<br>
   No browser cookies. No Keychain access. No API keys. No third-party account.<br>
   <a href="https://getcodexbar.xyz"><strong>getcodexbar.xyz</strong></a>
 </p>
+
+> CodexBar Lite is an independent community project and is not affiliated with OpenAI.
 
 <p align="center">
   <a href="https://github.com/wei-b0/codexbar-lite/releases/latest">
@@ -24,21 +26,46 @@
   <img src="assets/banner.png" alt="CodexBar Lite - your Codex usage, right in your menu bar" width="720">
 </p>
 
-## Your Codex login is enough
+## Why CodexBar Lite?
+
+CodexBar Lite exists because checking usage should not require giving an app access to your browser, cookies, or unrelated system permissions.
+
+It uses the existing Codex CLI session already created by `codex login` and only does what it needs: show your usage.
+
+## Features
+
+- Native macOS menu bar app
+- Primary and secondary Codex usage windows with reset times
+- Notifications at 80%, 90%, exhaustion, and credit reset
+- Percentage used or percentage remaining - your choice
+- Automatic refresh with cached usage when offline
+- Launch at login and over-the-air updates with Sparkle
+- No account required
+
+No dashboards, browser extensions, graphs, themes, or account switching. CodexBar Lite stays small because the menu bar is all this job needs.
+
+## Security model
 
 Usage trackers often ask you to hand over access to sensitive parts of your Mac just to display a number.
 
 > **CodexBar Lite does not need Chrome access, browser profiles, cookies, macOS Keychain, Accessibility, Screen Recording, Full Disk Access, or an API key.**
 
-It reads the same local session created by `codex login` and makes the minimum request needed to show your usage. There is no third-party backend, account, telemetry, or analytics.
+CodexBar Lite:
 
-- See primary and secondary usage with reset times
-- Get notified at 80%, 90%, exhaustion, and credit reset
-- Choose percentage used or percentage remaining
-- Refresh automatically and fall back to cached usage when offline
-- Launch at login and update over the air with Sparkle
+- Reads only `~/.codex/auth.json`
+- Makes requests directly for your Codex usage
+- Stores only local preferences and a usage cache
 
-No dashboards, browser extensions, graphs, themes, or account switching. CodexBar Lite stays small because the menu bar is all this job needs.
+It does not:
+
+- Access browser cookies or Chrome profiles
+- Use the macOS Keychain
+- Upload credentials to any third-party server
+- Run telemetry or analytics
+
+The session is used only to request your Codex usage from OpenAI's Codex service. Credentials are not sent to a third-party server or stored anywhere else by CodexBar Lite.
+
+## How it works
 
 Open the app. If no Codex session exists, CodexBar Lite launches `codex login` in Terminal and watches for completion. Usage appears automatically when login succeeds.
 
@@ -48,13 +75,13 @@ CodexBar Lite reads:
 ~/.codex/auth.json
 ```
 
-The session is used only to request your Codex usage directly from `chatgpt.com`. Credentials are not sent to a third-party server or stored anywhere else by CodexBar Lite.
+## Requirements
 
-The app stores only preferences and a local usage cache. It contains no telemetry or analytics.
+- macOS 13 Ventura or newer
+- Apple Silicon Mac (arm64)
+- Codex CLI installed
 
 ## Install
-
-Requires an Apple Silicon Mac running macOS 13 Ventura or newer, with the Codex CLI installed.
 
 1. [Download the latest release](https://github.com/wei-b0/codexbar-lite/releases/download/v0.2.4/CodexBarLite-0.2.4-arm64.dmg).
 2. Open the downloaded `.dmg`.
@@ -70,6 +97,10 @@ Future versions install through **CodexBar Lite → Check for Updates…**.
 - Percentage used or remaining
 - Automatic update checks
 - Notification controls
+
+<p align="center">
+  <img src="assets/screenshots/preferences.png" alt="CodexBar Lite preferences window" width="499">
+</p>
 
 ## Build from source
 
