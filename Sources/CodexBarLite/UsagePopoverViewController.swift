@@ -67,6 +67,18 @@ final class UsagePopoverViewController: NSViewController {
         let view = NSView(frame: NSRect(x: 0, y: 0, width: contentWidth, height: 400))
         self.view = view
 
+        // NSPopover's own chrome is vibrant and samples whatever sits behind
+        // the popover window (desktop wallpaper, windows underneath), so the
+        // exact same content looks different depending on what's behind it.
+        // Backing the content with an opaque, within-window effect view
+        // pins it to a solid, consistent appearance.
+        let background = NSVisualEffectView(frame: view.bounds)
+        background.autoresizingMask = [.width, .height]
+        background.material = .popover
+        background.blendingMode = .withinWindow
+        background.state = .active
+        view.addSubview(background)
+
         buildHeader(into: view)
         buildHero()
         buildInfoGroups()
