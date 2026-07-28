@@ -96,8 +96,8 @@ final class CodexBarLiteApp: NSObject, NSApplicationDelegate {
         if let logoImage = AppBranding.logoImage {
             NSApp.applicationIconImage = logoImage
         }
-        statusItem.button?.title = "Codex ◔ …"
         configureStatusItem()
+        renderStatusItem()
         configurePopover()
 
         settings.applyLaunchAtLoginDefaultIfNeeded()
@@ -369,7 +369,7 @@ final class CodexBarLiteApp: NSObject, NSApplicationDelegate {
         lastUpdatedAt = updatedAt
         lastWarning = warning
         presentationState = .usage
-        updateStatusTitle(for: usage)
+        renderStatusItem()
         rebuildActionsMenu(showLogin: false)
         popoverController.update(
             state: .usage(usage, updatedAt: updatedAt, warning: warning),
@@ -379,17 +379,17 @@ final class CodexBarLiteApp: NSObject, NSApplicationDelegate {
     }
 
     private func renderLoginMenu(signingIn: Bool) {
-        statusItem.button?.title = signingIn ? "Codex ◔ Sign In…" : "Codex ◔ Sign In"
         lastUsage = nil
         lastUpdatedAt = nil
         presentationState = .signedOut(signingIn: signingIn)
+        renderStatusItem()
         rebuildActionsMenu(showLogin: true)
         popoverController.update(state: .signedOut(signingIn: signingIn), displayMode: settings.displayMode)
     }
 
     private func renderErrorMenu(_ error: Error) {
-        statusItem.button?.title = "Codex ◔ Error"
         presentationState = .failure(error.localizedDescription)
+        renderStatusItem()
         rebuildActionsMenu(showLogin: false)
         popoverController.update(state: .failure(error.localizedDescription), displayMode: settings.displayMode)
     }
@@ -428,12 +428,50 @@ final class CodexBarLiteApp: NSObject, NSApplicationDelegate {
         popoverController.actionsMenu = menu
     }
 
-    private func updateStatusTitle(for usage: CodexUsage) {
-        let primary = displayedPercent(usage.rateLimit.primaryWindow)
-        statusItem.button?.title = "Codex ◔ \(primary)%"
-        if lastWarning != nil {
-            statusItem.button?.title += " ⚠"
+    private func renderStatusItem() {
+        guard let button = statusItem.button else { return }
+
+        let logo = AppBranding.logoImage
+
+        switch presentationState {
+        case .usage:
+            guard let usage = lastUsage else {
+                button.image = StatusIconRenderer.render(.empty, logo: logo)
+                return
+            }
+            let used = usage.rateLimit.primaryWindow.usedPercent
+            let shown = settings.displayMode == .used ? used : 100 - used
+            let progress = Double(max(0, min(100, shown))) / 100
+            let color = AppBranding.progressColor(forUsedPercent: used)
+            button.image = StatusIconRenderer.render(.usage(progress: progress, color: color), logo: logo)
+            button.attributedTitle = statusItemTitle("\(shown)%", warningSuffix: lastWarning != nil)
+        case .signedOut:
+            button.image = StatusIconRenderer.render(.empty, logo: logo)
+            button.attributedTitle = statusItemTitle("—%", warningSuffix: false)
+        case .failure:
+            button.image = StatusIconRenderer.render(.empty, logo: logo)
+            button.attributedTitle = statusItemTitle("—%", warningSuffix: false)
+        case nil:
+            button.image = StatusIconRenderer.render(.empty, logo: logo)
+            button.attributedTitle = statusItemTitle("—%", warningSuffix: false)
         }
+    }
+
+    private func statusItemTitle(_ text: String, warningSuffix: Bool) -> NSAttributedString {
+        let suffixText = warningSuffix ? " ⚠" : ""
+        let baseFont = NSFont.monospacedDigitSystemFont(ofSize: 12, weight: .medium)
+        let attr = NSMutableAttributedString(string: text + suffixText, attributes: [
+            .font: baseFont,
+            .foregroundColor: NSColor.labelColor
+        ])
+        if warningSuffix {
+            let ns = attr.string as NSString
+            let range = ns.range(of: suffixText)
+            if range.location != NSNotFound {
+                attr.addAttribute(.foregroundColor, value: NSColor.systemYellow, range: range)
+            }
+        }
+        return attr
     }
 
     private func displayedPercent(_ window: UsageWindow) -> Int {
@@ -509,6 +547,7 @@ final class CodexBarLiteApp: NSObject, NSApplicationDelegate {
         }
         notificationManager.requestAuthorizationIfNeeded()
         refreshDisplayedState()
+        renderStatusItem()
     }
 
     // MARK: - Cache

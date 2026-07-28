@@ -61,6 +61,7 @@ final class UsagePopoverViewController: NSViewController {
     private let usageStack = NSStackView()
     private let rootStack = NSStackView()
     private var currentState: PopoverState?
+    private var hasRenderedUsage = false
 
     override func loadView() {
         let view = NSView(frame: NSRect(x: 0, y: 0, width: contentWidth, height: 400))
@@ -144,11 +145,11 @@ final class UsagePopoverViewController: NSViewController {
     private func buildHero() {
         ringView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            ringView.widthAnchor.constraint(equalToConstant: 140),
-            ringView.heightAnchor.constraint(equalToConstant: 140)
+            ringView.widthAnchor.constraint(equalToConstant: 156),
+            ringView.heightAnchor.constraint(equalToConstant: 156)
         ])
 
-        percentLabel.font = .monospacedDigitSystemFont(ofSize: 30, weight: .semibold)
+        percentLabel.font = .monospacedDigitSystemFont(ofSize: 32, weight: .semibold)
         usedCaptionLabel.font = .systemFont(ofSize: 11, weight: .medium)
         usedCaptionLabel.textColor = .secondaryLabelColor
 
@@ -314,10 +315,16 @@ final class UsagePopoverViewController: NSViewController {
 
         let primary = usage.rateLimit.primaryWindow
         let used = primary.usedPercent
-        ringView.progress = Double(used) / 100
-        ringView.ringColor = AppBranding.progressColor(forUsedPercent: used)
-        percentLabel.stringValue = displayMode == .used ? "\(used)%" : "\(100 - used)%"
-        usedCaptionLabel.stringValue = displayMode == .used ? "Used" : "Left"
+        let shown = displayMode == .used ? used : 100 - used
+        let ringColor = AppBranding.progressColor(forUsedPercent: used)
+        let ringProgress = Double(max(0, min(100, shown))) / 100
+
+        ringView.ringColor = ringColor
+        ringView.setProgress(ringProgress, animated: hasRenderedUsage)
+        percentLabel.stringValue = "\(shown)%"
+        usedCaptionLabel.stringValue = displayMode == .used ? "Used" : "Remaining"
+        usedCaptionLabel.textColor = ringColor
+        hasRenderedUsage = true
 
         windowRow.value = windowLengthDescription(primary)
         resetInRow.value = formatDuration(secondsUntilReset(primary))

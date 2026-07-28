@@ -31,22 +31,56 @@ func flexibleSpacer() -> NSView {
 
 // MARK: - Progress ring
 
-/// Circular usage ring: faint track with a round-capped accent arc, drawn from 12 o'clock clockwise.
+/// Circular usage ring: faint quaternary-label track + round-capped accent
+/// arc, drawn from 12 o'clock clockwise. The accent is a CAShapeLayer so it
+/// can tween smoothly via `setProgress(_:animated:)` during data refresh
+/// without driving a continuous timer.
 final class ProgressRingView: NSView {
-    var progress: Double = 0 {
-        didSet { needsDisplay = true; updateAccessibilityValue() }
+    private var _progress: Double = 0
+
+    var progress: Double {
+        get { _progress }
+        set {
+            _progress = min(1, max(0, newValue))
+            arcLayer.strokeEnd = CGFloat(_progress)
+            updateAccessibilityValue()
+        }
     }
 
     var ringColor: NSColor = AppBranding.accentColor {
-        didSet { needsDisplay = true }
+        didSet { arcLayer.strokeColor = ringColor.cgColor }
     }
 
     var lineWidth: CGFloat = 11 {
-        didSet { needsDisplay = true }
+        didSet {
+            trackLayer.lineWidth = lineWidth
+            arcLayer.lineWidth = lineWidth
+            updatePaths()
+        }
     }
+
+    private let trackLayer = CAShapeLayer()
+    private let arcLayer = CAShapeLayer()
 
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
+        wantsLayer = true
+
+        trackLayer.fillColor = NSColor.clear.cgColor
+        trackLayer.strokeColor = NSColor.quaternaryLabelColor.cgColor
+        trackLayer.lineCap = .round
+        trackLayer.lineWidth = lineWidth
+        layer?.addSublayer(trackLayer)
+
+        arcLayer.fillColor = NSColor.clear.cgColor
+        arcLayer.strokeColor = ringColor.cgColor
+        arcLayer.lineCap = .round
+        arcLayer.lineWidth = lineWidth
+        arcLayer.strokeEnd = CGFloat(_progress)
+        layer?.addSublayer(arcLayer)
+
+        setAccessibilityRole(.progressIndicator)
+        setAccessibilityLabel("Codex usage")
         updateAccessibilityValue()
     }
 
@@ -54,38 +88,61 @@ final class ProgressRingView: NSView {
         nil
     }
 
-    override func draw(_ dirtyRect: NSRect) {
+    override func layout() {
+        super.layout()
+        updatePaths()
+    }
+
+    override func viewDidChangeEffectiveAppearance() {
+        super.viewDidChangeEffectiveAppearance()
+        trackLayer.strokeColor = NSColor.quaternaryLabelColor.cgColor
+    }
+
+    /// Set progress, optionally tweening the arc with a subtle ease-out.
+    /// The popover calls this on refresh; the first render after load should
+    /// pass `animated: false` so the user sees the actual value, not 0→value.
+    func setProgress(_ value: Double, animated: Bool) {
+        let v = min(1, max(0, value))
+        if animated {
+            let from = arcLayer.presentation()?.strokeEnd ?? arcLayer.strokeEnd
+            if abs(from - CGFloat(v)) > 0.0005 {
+                let anim = CABasicAnimation(keyPath: "strokeEnd")
+                anim.fromValue = from
+                anim.toValue = CGFloat(v)
+                anim.duration = 0.32
+                anim.timingFunction = CAMediaTimingFunction(name: .easeOut)
+                arcLayer.add(anim, forKey: "strokeEnd")
+            }
+        }
+        progress = v
+    }
+
+    private func updatePaths() {
         let inset = lineWidth / 2
         let rect = bounds.insetBy(dx: inset, dy: inset)
         guard rect.width > 0, rect.height > 0 else { return }
-
-        let center = NSPoint(x: rect.midX, y: rect.midY)
         let radius = min(rect.width, rect.height) / 2
 
-        let track = NSBezierPath()
-        track.appendArc(withCenter: center, radius: radius, startAngle: 0, endAngle: 360)
-        track.lineWidth = lineWidth
-        NSColor.quaternaryLabelColor.setStroke()
-        track.stroke()
+        CATransaction.begin()
+        CATransaction.setDisableActions(true)
+        trackLayer.path = CGPath(ellipseIn: rect, transform: nil)
 
-        let clamped = min(1, max(0, progress))
-        guard clamped > 0 else { return }
-
-        let arc = NSBezierPath()
-        if clamped >= 1 {
-            arc.appendArc(withCenter: center, radius: radius, startAngle: 0, endAngle: 360)
+        let center = CGPoint(x: rect.midX, y: rect.midY)
+        let arcPath = CGMutablePath()
+        if _progress >= 0.9999 {
+            arcPath.addArc(center: center, radius: radius, startAngle: 0, endAngle: 2 * CGFloat.pi, clockwise: false)
         } else {
-            arc.appendArc(withCenter: center, radius: radius, startAngle: 90, endAngle: 90 - 360 * clamped, clockwise: true)
+            let start = CGFloat.pi / 2
+            let end = start - 2 * CGFloat.pi * CGFloat(_progress)
+            arcPath.addArc(center: center, radius: radius, startAngle: start, endAngle: end, clockwise: true)
         }
-        arc.lineWidth = lineWidth
-        arc.lineCapStyle = .round
-        ringColor.setStroke()
-        arc.stroke()
+        arcLayer.path = arcPath
+        arcLayer.strokeEnd = CGFloat(_progress)
+        CATransaction.commit()
     }
 
     private func updateAccessibilityValue() {
-        setAccessibilityRole(.progressIndicator)
-        setAccessibilityValue(NSNumber(value: Int(progress * 100)))
+        setAccessibilityValue(NSNumber(value: Int(_progress * 100)))
     }
 }
 
@@ -214,5 +271,148 @@ final class ThinBarView: NSView {
         let fill = NSBezierPath(roundedRect: fillRect, xRadius: 2, yRadius: 2)
         barColor.setFill()
         fill.fill()
+    }
+}
+
+// MARK: - Menu bar status icon
+
+/// Visual state for the menu bar status item icon. `.empty` renders a dim logo
+/// without the ring; `.usage` renders the ring + accent arc + inscribed logo.
+enum StatusIconState: Equatable {
+    case empty
+    case usage(progress: Double, color: NSColor)
+
+    static func == (lhs: StatusIconState, rhs: StatusIconState) -> Bool {
+        switch (lhs, rhs) {
+        case (.empty, .empty):
+            return true
+        case let (.usage(a, c1), .usage(b, c2)):
+            return abs(a - b) < 0.001 && c1 == c2
+        default:
+            return false
+        }
+    }
+}
+
+/// Composes the menu bar status item image: a thin circular progress ring
+/// with the CodexBar Lite logo inscribed inside. Rendered once per refresh
+/// (no continuous animation). Light/dark-aware via NSColor.quaternaryLabelColor
+/// for the ring track. Bitmap is generated at @2x for crisp Retina rendering;
+/// the NSImage reports its logical point size so AppKit places it correctly.
+enum StatusIconRenderer {
+    /// Logical point size of the composited icon.
+    static let iconSize = NSSize(width: 22, height: 22)
+    private static let scale: CGFloat = 2
+    private static let ringInset: CGFloat = 1.5
+    private static let ringLineWidth: CGFloat = 2.0
+
+    static func render(_ state: StatusIconState, logo: NSImage?) -> NSImage {
+        let pixelWidth = Int(iconSize.width * scale)
+        let pixelHeight = Int(iconSize.height * scale)
+
+        guard let rep = NSBitmapImageRep(
+            bitmapDataPlanes: nil,
+            pixelsWide: pixelWidth,
+            pixelsHigh: pixelHeight,
+            bitsPerSample: 8,
+            samplesPerPixel: 4,
+            hasAlpha: true,
+            isPlanar: false,
+            colorSpaceName: .deviceRGB,
+            bytesPerRow: 0,
+            bitsPerPixel: 32
+        ) else {
+            return logo ?? NSImage(size: iconSize)
+        }
+        rep.size = iconSize
+
+        let image = NSImage(size: iconSize)
+        image.addRepresentation(rep)
+
+        image.lockFocus()
+        draw(state: state, logo: logo, bounds: NSRect(origin: .zero, size: iconSize))
+        image.unlockFocus()
+
+        return image
+    }
+
+    private static func draw(state: StatusIconState, logo: NSImage?, bounds: NSRect) {
+        switch state {
+        case .empty:
+            drawEmpty(logo: logo, bounds: bounds)
+        case let .usage(progress, color):
+            drawUsage(progress: progress, color: color, logo: logo, bounds: bounds)
+        }
+    }
+
+    private static func drawEmpty(logo: NSImage?, bounds: NSRect) {
+        let logoSize = min(bounds.width, bounds.height) - 4
+        let r = NSRect(
+            x: bounds.midX - logoSize / 2,
+            y: bounds.midY - logoSize / 2,
+            width: logoSize,
+            height: logoSize
+        )
+        drawLogo(in: r, logo: logo, alpha: 0.6, circular: true)
+    }
+
+    private static func drawUsage(progress: Double, color: NSColor, logo: NSImage?, bounds: NSRect) {
+        let ringRect = bounds.insetBy(dx: ringInset, dy: ringInset)
+        let radius = min(ringRect.width, ringRect.height) / 2 - ringLineWidth / 2
+        let center = NSPoint(x: ringRect.midX, y: ringRect.midY)
+
+        // Faint track
+        let track = NSBezierPath(ovalIn: ringRect)
+        track.lineWidth = ringLineWidth
+        NSColor.quaternaryLabelColor.setStroke()
+        track.stroke()
+
+        // Accent arc from 12 o'clock clockwise.
+        let p = min(1, max(0, progress))
+        if p >= 0.9999 {
+            let full = NSBezierPath(ovalIn: ringRect)
+            full.lineWidth = ringLineWidth
+            full.lineCapStyle = .round
+            color.setStroke()
+            full.stroke()
+        } else if p > 0.001 {
+            let arc = NSBezierPath()
+            arc.appendArc(
+                withCenter: center,
+                radius: radius,
+                startAngle: 90,
+                endAngle: 90 - 360 * p,
+                clockwise: true
+            )
+            arc.lineWidth = ringLineWidth
+            arc.lineCapStyle = .round
+            color.setStroke()
+            arc.stroke()
+        }
+
+        // Logo inscribed inside the ring.
+        let logoSize = min(ringRect.width, ringRect.height) - ringLineWidth - 1.5
+        let r = NSRect(
+            x: center.x - logoSize / 2,
+            y: center.y - logoSize / 2,
+            width: logoSize,
+            height: logoSize
+        )
+        drawLogo(in: r, logo: logo, alpha: 1.0, circular: true)
+    }
+
+    private static func drawLogo(in rect: NSRect, logo: NSImage?, alpha: CGFloat, circular: Bool) {
+        guard let logo else { return }
+        let clipPath: NSBezierPath = circular
+            ? NSBezierPath(ovalIn: rect)
+            : NSBezierPath(roundedRect: rect, xRadius: rect.width * 0.18, yRadius: rect.height * 0.18)
+        clipPath.addClip()
+        logo.draw(
+            in: rect,
+            from: NSRect(origin: .zero, size: logo.size),
+            operation: .sourceOver,
+            fraction: alpha
+        )
+        NSGraphicsContext.current?.cgContext.resetClip()
     }
 }
