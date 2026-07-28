@@ -339,8 +339,13 @@ final class UsagePopoverViewController: NSViewController {
         hasRenderedUsage = true
 
         windowRow.value = windowLengthDescription(primary)
-        resetInRow.value = formatDuration(secondsUntilReset(primary))
-        resetAtRow.value = resetAtDescription(primary)
+        if primary.usedPercent > 0 {
+            resetInRow.value = formatDuration(secondsUntilReset(primary))
+            resetAtRow.value = resetAtDescription(primary)
+        } else {
+            resetInRow.value = "Not started"
+            resetAtRow.value = "Not started"
+        }
 
         if let credits = usage.rateLimitResetCredits?.availableCount {
             creditsRow.value = "\(credits)"
@@ -355,7 +360,9 @@ final class UsagePopoverViewController: NSViewController {
             secondaryRow.value = displayMode == .used ? "\(secondaryUsed)% used" : "\(100 - secondaryUsed)% left"
             secondaryBar.progress = secondaryUsed
             secondaryBar.barColor = AppBranding.progressColor(forUsedPercent: secondaryUsed)
-            secondaryResetRow.value = formatDuration(secondsUntilReset(secondary))
+            secondaryResetRow.value = secondaryUsed > 0
+                ? formatDuration(secondsUntilReset(secondary))
+                : "Not started"
         } else {
             secondaryGroup.isHidden = true
         }
