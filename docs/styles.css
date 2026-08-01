@@ -1433,6 +1433,16 @@ button.demo-menurow:hover .demo-refresh-icon {
   color: var(--accent-hover);
 }
 
+.table-scroll {
+  overflow-x: auto;
+  margin: 0.5rem 0 1.5rem;
+}
+
+.table-scroll .guide-table {
+  margin: 0;
+  min-width: 640px;
+}
+
 .guide-table {
   width: 100%;
   border-collapse: collapse;

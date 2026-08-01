@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Check Codex Usage Without an API Key - CodexBar Lite</title>
+  <meta name="description" content="How to see your OpenAI Codex usage without an API key, Keychain access, or browser cookies - by reading the session your existing codex login already created.">
+  <meta name="author" content="Vaibhav Muchandi">
+  <meta name="theme-color" content="#121212">
+  <link rel="canonical" href="https://getcodexbar.xyz/codex-usage-without-api-key">
+  <link rel="icon" href="assets/icon-256.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icon-32.png">
+  <link rel="apple-touch-icon" href="assets/icon-180.png">
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="CodexBar Lite">
+  <meta property="og:url" content="https://getcodexbar.xyz/codex-usage-without-api-key">
+  <meta property="og:title" content="Check Codex Usage Without an API Key">
+  <meta property="og:description" content="How to see your OpenAI Codex usage without an API key, Keychain access, or browser cookies - by reading the session your existing codex login already created.">
+  <meta property="og:image" content="https://getcodexbar.xyz/assets/og-card.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Check Codex Usage Without an API Key">
+  <meta name="twitter:description" content="How to see your OpenAI Codex usage without an API key, Keychain access, or browser cookies - by reading the session your existing codex login already created.">
+  <meta name="twitter:image" content="https://getcodexbar.xyz/assets/og-card.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="https://cloud.umami.is/script.js" data-website-id="4650122d-258b-450f-aeaf-46cf3cff7531"></script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "TechArticle",
+    "headline": "Check Codex Usage Without an API Key",
+    "description": "How to see your OpenAI Codex usage without an API key, Keychain access, or browser cookies - by reading the session your existing codex login already created.",
+    "url": "https://getcodexbar.xyz/codex-usage-without-api-key",
+    "image": "https://getcodexbar.xyz/assets/og-card.jpg",
+    "author": {
+      "@type": "Person",
+      "name": "Vaibhav Muchandi",
+      "sameAs": "https://github.com/wei-b0"
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "CodexBar Lite",
+      "url": "https://getcodexbar.xyz/"
+    }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "CodexBar Lite", "item": "https://getcodexbar.xyz/" },
+      { "@type": "ListItem", "position": 2, "name": "Check Codex Usage Without an API Key", "item": "https://getcodexbar.xyz/codex-usage-without-api-key" }
+    ]
+  }
+  </script>
+</head>
+<body>
+
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a class="nav-brand" href="/">
+        <img src="assets/icon-256.png" alt="" width="28" height="28">
+        <span>CodexBar Lite</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="/#features">Features</a>
+        <a href="/#private">Privacy</a>
+        <a href="/#install">Install</a>
+        <a href="/#faq">FAQ</a>
+      </nav>
+      <span class="nav-download">
+        <a class="btn btn-primary btn-small" href="https://github.com/wei-b0/codexbar-lite/releases/download/v0.2.4/CodexBarLite-0.2.4-arm64.dmg" target="_blank" rel="noopener noreferrer" data-umami-event="download" data-umami-event-position="guide-nav-codex-usage-without-api-key">Download</a>
+      </span>
+    </div>
+  </header>
+
+  <main>
+    <section class="section">
+      <div class="wrap guide-wrap">
+        <p class="eyebrow">Guide</p>
+        <h1 class="headline">Check your Codex usage without an API key.</h1>
+        <p class="section-sub">Most usage trackers ask for something first - an API key, a Keychain prompt, a browser cookie grab. Here's why that's normally the price of admission, and how to skip it entirely for Codex.</p>
+
+        <h2>Why usage trackers usually ask for more than a login</h2>
+        <p>A menu bar app that shows "usage" for more than one AI provider generally has to reach into wherever each provider keeps that data: an API key you generate and paste in, a browser's cookie jar (which on macOS means asking the Keychain to decrypt it, and sometimes Full Disk Access for Safari), or a stored account session. None of that is malicious - it's just what multi-provider tracking requires. But it does mean granting access well beyond "show me a number."</p>
+
+        <h2>What Codex already has, that other tools ask you to duplicate</h2>
+        <p>When you run <code>codex login</code>, the Codex CLI creates a local session file at <code>~/.codex/auth.json</code> on your Mac. That file is already the credential Codex itself uses to talk to <code>chatgpt.com</code>. An API key is a second, separate credential - one more secret to generate, store, and eventually rotate - for a session that already exists.</p>
+
+        <h2>How CodexBar Lite reads usage without one</h2>
+        <p><strong>CodexBar Lite</strong> reads that one file - <code>~/.codex/auth.json</code> - and makes the same minimum request to <code>chatgpt.com</code> that the Codex CLI would, purely to ask for your current usage. No API key is generated, stored, or transmitted, because none is needed. The same architecture means it also skips:</p>
+        <ul>
+          <li>Browser cookie access, on any browser</li>
+          <li>macOS Keychain</li>
+          <li>Full Disk Access, Accessibility, or Screen Recording</li>
+          <li>A third-party account or backend</li>
+        </ul>
+        <p>If no Codex session exists yet, CodexBar Lite launches <code>codex login</code> in Terminal and watches for it to complete - usage appears automatically once you're logged in, with nothing to configure afterward.</p>
+
+        <h2>Where this fits among the alternatives</h2>
+        <p>CodexBar Lite isn't the only tool with a minimal access model - see the <a href="/codexbar-alternative">full comparison against CodexBar, CodexUsageBar, SessionWatcher, and TokenBar</a> for how each one's requirements (and providers, price, and platform support) actually compare, sourced from their own sites.</p>
+
+        <div class="guide-cta">
+          <p>Your Codex login is enough. Free, open source, and native to your menu bar.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="https://github.com/wei-b0/codexbar-lite/releases/download/v0.2.4/CodexBarLite-0.2.4-arm64.dmg" target="_blank" rel="noopener noreferrer" data-umami-event="download" data-umami-event-position="guide-cta-codex-usage-without-api-key">Download CodexBar Lite</a>
+            <a class="btn btn-ghost" href="/">Learn more</a>
+          </div>
+        </div>
+
+        <p class="meta-line" style="margin-top: 2rem;">Not affiliated with, endorsed by, or sponsored by OpenAI.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap footer-inner">
+      <a class="nav-brand" href="/">
+        <img src="assets/icon-256.png" alt="" width="22" height="22">
+        <span>CodexBar Lite</span>
+      </a>
+      <nav class="footer-links" aria-label="Footer">
+        <a href="/codex-usage-limits">Codex Usage Limits</a>
+        <a href="/how-to-check-codex-usage">Check Codex Usage</a>
+        <a href="/codexbar-alternative">CodexBar Alternative</a>
+        <a href="/codex-usage-without-api-key">No API Key Needed</a>
+        <a href="https://github.com/wei-b0/codexbar-lite" target="_blank" rel="noopener noreferrer">GitHub</a>
+      </nav>
+      <p class="footer-disclaimer">Not affiliated with, endorsed by, or sponsored by OpenAI. Site analytics by cookieless <a href="https://umami.is" target="_blank" rel="noopener noreferrer">Umami</a> - the app itself has none.</p>
+    </div>
+  </footer>
+
+</body>
+</html>
